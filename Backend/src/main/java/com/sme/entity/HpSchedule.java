@@ -14,19 +14,19 @@ import java.util.Date;
 public class HpSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "date")
     private Timestamp date;
 
     @Column(name = "interest_amount")
-    private int interestAmount;
+    private Long interestAmount;
 
     @Column(name = "principal_amount")
-    private int principalAmount;
+    private Long principalAmount;
 
     @Column(name = "late_day")
-    private int lateDay;
+    private Long lateDay;
 
     @Column(name = "late_fee")
     private BigDecimal lateFee;
@@ -41,7 +41,7 @@ public class HpSchedule {
     private String installmentNo;
 
     @Column(name = "hp_registration_id", nullable = false)
-    private int hpRegistrationId;
+    private Long hpRegistrationId;
 
     @Column(name = "late_fee_paid_date")
     private LocalDateTime lateFeePaidDate;

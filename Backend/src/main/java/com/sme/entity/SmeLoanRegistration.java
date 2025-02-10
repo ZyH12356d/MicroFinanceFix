@@ -15,7 +15,7 @@ import java.util.List;
 public class SmeLoanRegistration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "loan_amount", nullable = false, precision = 15, scale = 2)
     private BigDecimal loanAmount;
@@ -33,7 +33,7 @@ public class SmeLoanRegistration {
     private LocalDate graceEndDate;
 
     @Column(name = "repayment_duration", nullable = false, length = 100)
-    private int repaymentDuration;
+    private Long repaymentDuration;
 
     @Column(name = "document_fee", nullable = false)
     private BigDecimal documentFee;

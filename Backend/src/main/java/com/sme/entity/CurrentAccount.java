@@ -14,13 +14,13 @@ public class CurrentAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @Column(name = "account_number", nullable = false, length = 45)
+    @Column(name = "account_number", nullable = false, length = 45, insertable = false, updatable = false)
     private String accountNumber;
 
     @Column(nullable = false, length = 45)
-    private String balance;
+    private BigDecimal balance;
 
     @Column(name = "account_status", nullable = false, length = 45)
     private Integer status;

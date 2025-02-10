@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class HpRegistration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "hp_number", nullable = false)
     private String hpNumber;
@@ -53,10 +53,10 @@ public class HpRegistration {
     }
 
     @Column(name = "disbursement_id", nullable = false)
-    private int disbursementId;
+    private Long disbursementId;
 
     @Column(name = "current_account_id", nullable = false)
-    private int currentAccountId;
+    private Long currentAccountId;
 
     @Column(name = "disbusement_date")
     private LocalDateTime disbursementDate;

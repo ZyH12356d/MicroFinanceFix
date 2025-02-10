@@ -64,7 +64,6 @@ public class CIF {
     @OneToOne(mappedBy = "cif", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private CurrentAccount currentAccount;
 
-
     @OneToMany(mappedBy = "cif", cascade = CascadeType.ALL)
     private List<Collateral> collaterals;
 

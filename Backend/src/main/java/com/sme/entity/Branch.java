@@ -13,7 +13,7 @@ public class Branch {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(nullable = false, length = 45)
     private String name;
@@ -47,8 +47,7 @@ public class Branch {
         this.status = status.getCode();
     }
 
-    @ManyToOne
-    @JoinColumn(name = "address_id", nullable = false)
+    @OneToOne
     private Address address;
 
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)

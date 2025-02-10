@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class RepaymentTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "payment_date", nullable = false)
     private Timestamp paymentDate;

@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 public class HpRepaymentTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "payment_date")
     private Timestamp paymentDate;
@@ -38,9 +38,9 @@ public class HpRepaymentTransaction {
     private String paidPrincipalLateFee;
 
     @Column(name = "hp_schedule_id", nullable = false)
-    private int hpScheduleId;
+    private Long hpScheduleId;
 
     @Column(name = "current_account_id", nullable = false)
-    private int currentAccountId;
+    private Long currentAccountId;
 
  }
