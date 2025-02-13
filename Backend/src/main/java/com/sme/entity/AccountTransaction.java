@@ -1,5 +1,6 @@
 package com.sme.entity;
 
+import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -28,17 +29,10 @@ public class AccountTransaction {
     @Column(name = "account_transaction_desc", nullable = false, length = 45)
     private String transactionDescription;
 
+    @StatusConverter
     @Column(name = "transaction_status", nullable = false)
     private Integer status;
 
-
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
-
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
 
     @Column(name = "balance_after_transaction", precision = 15, scale = 2, nullable = false)
     private BigDecimal balanceAfterTransaction;

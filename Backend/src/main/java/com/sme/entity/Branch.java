@@ -1,5 +1,6 @@
 package com.sme.entity;
 
+import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -35,17 +36,9 @@ public class Branch {
     @Column(nullable = false)
     private Date updatedDate;
 
+    @StatusConverter
     @Column(nullable = false)
     private Integer status;
-
-
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
-
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
 
     @OneToOne
     private Address address;

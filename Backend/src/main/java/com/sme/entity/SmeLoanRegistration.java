@@ -1,5 +1,6 @@
 package com.sme.entity;
 
+import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -41,17 +42,12 @@ public class SmeLoanRegistration {
     @Column(name = "service_charges", nullable = false)
     private BigDecimal serviceCharges;
 
+    @StatusConverter
     @Column(name = "status", nullable = false)
     private Integer status;
 
 
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
 
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
 
     @Column(name = "due_date")
     private LocalDateTime dueDate;

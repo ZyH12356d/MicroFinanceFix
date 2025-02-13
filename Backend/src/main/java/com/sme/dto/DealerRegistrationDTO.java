@@ -1,5 +1,6 @@
 package com.sme.dto;
 
+import com.sme.annotation.StatusConverter;
 import com.sme.entity.Status;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ public class DealerRegistrationDTO {
     private String companyName;
     private String phoneNumber;
     private LocalDateTime registrationDate;
+    @StatusConverter
     private Integer status;
     private int addressId;
     private int currentAccountId;
