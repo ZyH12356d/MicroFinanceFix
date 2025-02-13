@@ -4,6 +4,8 @@ package com.sme.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "product_type")
@@ -17,6 +19,9 @@ public class ProductType {
 
     @Column(name = "status")
     private Integer status;
+
+    @OneToMany(mappedBy = "productType", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HpProduct> hpProducts;
 
 
     public Status getStatus() {

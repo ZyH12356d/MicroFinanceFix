@@ -1,0 +1,24 @@
+package com.sme.dto;
+
+import com.sme.entity.Status;
+import lombok.Data;
+import java.time.LocalDateTime;
+
+@Data
+public class DealerRegistrationDTO {
+    private Long id;
+    private String companyName;
+    private String phoneNumber;
+    private LocalDateTime registrationDate;
+    private Integer status;
+    private int addressId;
+    private int currentAccountId;
+
+    public Status getStatus() {
+        return Status.fromCode(this.status);
+    }
+
+    public void setStatus(Status status) {
+        this.status = status.getCode();
+    }
+}

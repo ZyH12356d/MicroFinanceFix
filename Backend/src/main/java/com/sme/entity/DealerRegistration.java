@@ -5,6 +5,9 @@ import lombok.Data;
 
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,7 +24,7 @@ public class DealerRegistration {
     private String phoneNumber;
 
     @Column(name = "registration_date")
-    private Timestamp registrationDate;
+    private LocalDateTime registrationDate;
 
     @Column(name = "status")
     private Integer status;
@@ -41,5 +44,8 @@ public class DealerRegistration {
     @Column(name = "current_account_id", nullable = false)
     private int currentAccountId;
 
- }
+    @OneToMany(mappedBy = "dealerRegistration", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HpProduct> hpProducts;
+
+}
 

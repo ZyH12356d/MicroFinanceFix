@@ -21,7 +21,7 @@ public class Collateral {
     @Column(name = "value", nullable = false, precision = 15, scale = 2)
     private BigDecimal value;
 
-    @Column(name = "description", nullable = false, length = 255)
+    @Column(name = "description", nullable = false, length = 1000)
     private String description;
 
     @Column(nullable = false, length = 45)

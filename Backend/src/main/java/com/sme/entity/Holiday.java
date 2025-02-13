@@ -18,7 +18,7 @@ public class Holiday {
     @Column(nullable = false)
     private Date holidayDate;
 
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 1000)
     private String description;
 
     @ManyToOne

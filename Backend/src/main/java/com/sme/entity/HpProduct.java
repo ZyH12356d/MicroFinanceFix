@@ -31,16 +31,18 @@ public class HpProduct {
     @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "product_type_id", nullable = false)
-    private int productTypeId;
+    @ManyToOne
+    @JoinColumn(name = "product_type_id", nullable = false)
+    private ProductType productType;
 
-    @Column(name = "dealer_registration_id", nullable = false)
-    private int dealerRegistrationId;
+    @ManyToOne
+    @JoinColumn(name = "dealer_registration_id", nullable = false)
+    private DealerRegistration dealerRegistration; // ✅ Corrected mapping
 
     @Column(name = "hp_registration_id", nullable = false)
     private int hpRegistrationId;
 
-    @Column(name = "comission_fee")
+    @Column(name = "comission_fee", precision = 10, scale = 2)
     private BigDecimal commissionFee;
 
 }
