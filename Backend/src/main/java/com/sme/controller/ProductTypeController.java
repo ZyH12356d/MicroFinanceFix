@@ -1,7 +1,10 @@
 package com.sme.controller;
 
 import com.sme.dto.ProductTypeDTO;
+<<<<<<< Updated upstream
 import com.sme.entity.Status;
+=======
+>>>>>>> Stashed changes
 import com.sme.service.ProductTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +48,11 @@ public class ProductTypeController {
     // ✅ Delete Product Type (Soft Delete)
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProductType(@PathVariable Long id) {
+<<<<<<< Updated upstream
         productTypeService.deleteProductType(2L);
+=======
+        productTypeService.deleteProductType(id);
+>>>>>>> Stashed changes
         return ResponseEntity.ok("Product Type marked as inactive.");
     }
 }

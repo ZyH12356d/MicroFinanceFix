@@ -33,7 +33,10 @@ public class DealerRegistrationController {
         return ResponseEntity.ok(dealerService.getDealerById(id));
     }
 
+<<<<<<< Updated upstream
     // ✅ Update Dealer
+=======
+>>>>>>> Stashed changes
     @PutMapping("/{id}")
     public ResponseEntity<DealerRegistrationDTO> updateDealer(
             @PathVariable Long id,

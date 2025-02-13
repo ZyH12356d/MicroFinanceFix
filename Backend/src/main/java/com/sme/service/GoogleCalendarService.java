@@ -1,15 +1,21 @@
 package com.sme.service;
 
 import com.google.api.client.auth.oauth2.Credential;
+<<<<<<< Updated upstream
 import com.google.api.client.json.JsonFactory;
 
 
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+=======
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+
+>>>>>>> Stashed changes
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
+<<<<<<< Updated upstream
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.calendar.Calendar;
@@ -20,6 +26,24 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.file.Paths;
+=======
+import com.google.api.client.json.JsonFactory;
+
+import com.google.api.client.json.jackson2.JacksonFactory;
+
+
+import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.services.calendar.Calendar;
+import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.Events;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.client.util.DateTime;
+
+import org.springframework.stereotype.Service;
+
+import java.io.*;
+import java.nio.file.Path;
+>>>>>>> Stashed changes
 import java.util.*;
 
 @Service
@@ -29,7 +53,10 @@ public class GoogleCalendarService {
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR_READONLY);
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
@@ -43,11 +70,18 @@ public class GoogleCalendarService {
 
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
+<<<<<<< Updated upstream
                 .setDataStoreFactory(new FileDataStoreFactory(Paths.get(TOKENS_DIRECTORY_PATH).toFile()))
                 .setAccessType("offline")
                 .build();
 
 
+=======
+                .setDataStoreFactory(new FileDataStoreFactory(new File(TOKENS_DIRECTORY_PATH)))
+                .setAccessType("offline")
+                .build();
+
+>>>>>>> Stashed changes
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
     }
 
@@ -59,7 +93,11 @@ public class GoogleCalendarService {
                 .setApplicationName(APPLICATION_NAME)
                 .build();
 
+<<<<<<< Updated upstream
         String calendarId = "en.mm#holiday@group.v.calendar.google.com"; // Myanmar Holidays Calendar ID
+=======
+        String calendarId = "en-gb.mm#holiday@group.v.calendar.google.com"; // Myanmar Holidays Calendar ID
+>>>>>>> Stashed changes
 
         // Fetch events (holidays)
         Events events = service.events().list(calendarId)

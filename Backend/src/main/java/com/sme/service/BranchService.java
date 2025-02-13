@@ -6,10 +6,12 @@ import com.sme.entity.Branch;
 import com.sme.entity.Address;
 import com.sme.repository.BranchRepository;
 import com.sme.repository.AddressRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,6 +27,39 @@ public class BranchService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    private String generateBranchCode() {
+        // Find the latest branch_code
+        String lastBranchCode = branchRepository.findLastBranchCode();
+
+        if (lastBranchCode == null) {
+            return "B0001"; // First branch
+        }
+
+        // Extract number part (e.g., "B0001" → 1)
+        int lastNumber = Integer.parseInt(lastBranchCode.substring(1));
+        int newNumber = lastNumber + 1;
+
+        // Generate new branch_code (e.g., "B0002")
+        return "B" + String.format("%04d", newNumber);
+    }
+
+    // ✅ Save new branch with auto-generated `branch_code`
+    @Transactional
+    public BranchDTO createBranch(BranchDTO branchDTO) {
+        Branch branch = modelMapper.map(branchDTO, Branch.class);
+        branch.setCreatedDate(new Date());
+        branch.setUpdatedDate(new Date());
+
+        // Generate unique branch_code
+        branch.setBranchCode(generateBranchCode());
+
+        // Save branch
+        Branch savedBranch = branchRepository.save(branch);
+        return modelMapper.map(savedBranch, BranchDTO.class);
+    }
+
+
 
     // Convert Branch entity to DTO
     private BranchDTO convertToDTO(Branch branch) {
@@ -62,19 +97,7 @@ public class BranchService {
         return branch.map(this::convertToDTO);
     }
 
-    // Create a new branch
-    public BranchDTO createBranch(BranchDTO branchDTO) {
-        Branch branch = convertToEntity(branchDTO);
 
-        // If Address ID is provided, fetch it from DB
-        if (branchDTO.getAddress() != null && branchDTO.getAddress().getId() > 0) {
-            Optional<Address> existingAddress = addressRepository.findById(branchDTO.getAddress().getId());
-            existingAddress.ifPresent(branch::setAddress);
-        }
-
-        Branch savedBranch = branchRepository.save(branch);
-        return convertToDTO(savedBranch);
-    }
 
     // Update an existing branch
     public BranchDTO updateBranch(Long id, BranchDTO branchDTO) {

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "branch")
+@Table(name = "branch", uniqueConstraints = @UniqueConstraint(columnNames = "branch_code"))
 public class Branch {
 
     @Id
@@ -18,7 +18,7 @@ public class Branch {
     @Column(nullable = false, length = 45)
     private String name;
 
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 45, unique = true)
     private String branchCode;
 
     @Column(nullable = false, length = 45)

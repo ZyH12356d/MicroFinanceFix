@@ -5,7 +5,10 @@ import lombok.Data;
 
 
 import java.sql.Timestamp;
+<<<<<<< Updated upstream
 import java.time.LocalDate;
+=======
+>>>>>>> Stashed changes
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,7 +18,7 @@ import java.util.List;
 public class DealerRegistration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "company_name")
     private String companyName;
@@ -28,7 +31,6 @@ public class DealerRegistration {
 
     @Column(name = "status")
     private Integer status;
-
 
     public Status getStatus() {
         return Status.fromCode(this.status);
@@ -47,5 +49,9 @@ public class DealerRegistration {
     @OneToMany(mappedBy = "dealerRegistration", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HpProduct> hpProducts;
 
+<<<<<<< Updated upstream
 }
+=======
+ }
+>>>>>>> Stashed changes
 

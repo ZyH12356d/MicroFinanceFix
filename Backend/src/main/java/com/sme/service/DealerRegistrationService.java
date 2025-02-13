@@ -21,11 +21,18 @@ public class DealerRegistrationService {
     @Autowired
     private ModelMapper modelMapper;
 
+<<<<<<< Updated upstream
     // ✅ Create Dealer Registration
     @Transactional
     public DealerRegistrationDTO createDealer(DealerRegistrationDTO dealerDTO) {
         DealerRegistration dealer = modelMapper.map(dealerDTO, DealerRegistration.class);
         dealer.setRegistrationDate(LocalDateTime.now());
+=======
+     @Transactional
+    public DealerRegistrationDTO createDealer(DealerRegistrationDTO dealerDTO) {
+        DealerRegistration dealer = modelMapper.map(dealerDTO, DealerRegistration.class);
+        dealer.setRegistrationDate(LocalDateTime.now()); // Set registration date
+>>>>>>> Stashed changes
         DealerRegistration savedDealer = dealerRepository.save(dealer);
         return modelMapper.map(savedDealer, DealerRegistrationDTO.class);
     }
@@ -38,14 +45,21 @@ public class DealerRegistrationService {
                 .collect(Collectors.toList());
     }
 
+<<<<<<< Updated upstream
     // ✅ Get Dealer by ID
     public DealerRegistrationDTO getDealerById(Long id) {
+=======
+     public DealerRegistrationDTO getDealerById(Long id) {
+>>>>>>> Stashed changes
         DealerRegistration dealer = dealerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Dealer not found with ID: " + id));
         return modelMapper.map(dealer, DealerRegistrationDTO.class);
     }
 
+<<<<<<< Updated upstream
     // ✅ Update Dealer
+=======
+>>>>>>> Stashed changes
     @Transactional
     public DealerRegistrationDTO updateDealer(Long id, DealerRegistrationDTO dealerDTO) {
         DealerRegistration existingDealer = dealerRepository.findById(id)

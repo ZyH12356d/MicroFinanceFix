@@ -9,5 +9,9 @@ import java.util.List;
 @Repository
 public interface DealerRegistrationRepository extends JpaRepository<DealerRegistration, Long> {
 
+<<<<<<< Updated upstream
      List<DealerRegistration> findByStatus(Integer status);
+=======
+    List<DealerRegistration> findByStatus(Integer status);
+>>>>>>> Stashed changes
 }
