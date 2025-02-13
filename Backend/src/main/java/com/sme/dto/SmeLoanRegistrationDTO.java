@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class SmeLoanRegistrationDTO {
+    private Long id;
     private BigDecimal loanAmount;
     private BigDecimal interestRate;
     private Integer gracePeriod;
@@ -28,4 +29,6 @@ public class SmeLoanRegistrationDTO {
     public void setStatus(Status status) {
         this.status = status.getCode();
     }
+
+
 }

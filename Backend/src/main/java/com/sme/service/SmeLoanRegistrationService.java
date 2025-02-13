@@ -4,6 +4,7 @@ import com.sme.dto.SmeLoanRegistrationDTO;
 import com.sme.entity.Collateral;
 import com.sme.entity.CurrentAccount;
  import com.sme.entity.SmeLoanRegistration;
+import com.sme.entity.Status;
 import com.sme.repository.CollateralRepository;
 import com.sme.repository.CurrentAccountRepository;
 import com.sme.repository.SmeLoanRegistrationRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SmeLoanRegistrationService {
@@ -64,4 +66,55 @@ public class SmeLoanRegistrationService {
     public void deleteLoan(Long id) {
         repository.deleteById(id);
     }
+
+    private SmeLoanRegistrationDTO convertToDTO(SmeLoanRegistration loan) {
+        SmeLoanRegistrationDTO dto = new SmeLoanRegistrationDTO();
+
+
+        dto.setId(loan.getId());
+
+
+        dto.setLoanAmount(loan.getLoanAmount());
+        dto.setInterestRate(loan.getInterestRate());
+        dto.setGracePeriod(loan.getGracePeriod());
+        dto.setRepaymentDuration(loan.getRepaymentDuration());
+        dto.setDocumentFee(loan.getDocumentFee());
+        dto.setServiceCharges(loan.getServiceCharges());
+        dto.setStatus(loan.getStatus());
+        dto.setDueDate(loan.getDueDate());
+        dto.setRepaymentStartDate(loan.getRepaymentStartDate());
+        dto.setDisbursementDate(loan.getDisbursementDate());
+
+        // Set Current Account ID if exists
+        if (loan.getCurrentAccount() != null) {
+            dto.setCurrentAccountId(loan.getCurrentAccount().getId());
+        }
+
+        // Set Collateral ID if exists
+        if (loan.getCollateral() != null) {
+            dto.setCollateralId(loan.getCollateral().getId());
+        }
+
+        return dto;
+    }
+
+
+    // Get loans by status and return DTOs
+    public List<SmeLoanRegistrationDTO> getLoansByStatus(String statusStr) {
+        try {
+            // Convert Status Enum to Integer Code
+            Status statusEnum = Status.valueOf(statusStr.toUpperCase());
+            int statusCode = statusEnum.getCode();
+
+            // Fetch loans by status code
+            List<SmeLoanRegistration> loans = repository.findByStatus(statusCode);
+
+            // Convert Entity List to DTO List
+            return loans.stream().map(this::convertToDTO).collect(Collectors.toList());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid status: " + statusStr);
+        }
+    }
+
 }
+

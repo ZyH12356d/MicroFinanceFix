@@ -41,7 +41,7 @@ public class SmeLoanRegistration {
     @Column(name = "service_charges", nullable = false)
     private BigDecimal serviceCharges;
 
-    @Column(name = "status", nullable = false)
+     @Column(name = "status", nullable = false)
     private Integer status;
 
 

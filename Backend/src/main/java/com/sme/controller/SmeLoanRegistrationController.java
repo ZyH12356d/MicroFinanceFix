@@ -16,15 +16,15 @@ public class SmeLoanRegistrationController {
     @Autowired
     private SmeLoanRegistrationService service;
 
-    @PostMapping("/register")
-    public SmeLoanRegistration registerLoan(@RequestBody SmeLoanRegistrationDTO dto) {
-        return service.registerLoan(dto);
-    }
+
 
     @GetMapping
     public List<SmeLoanRegistration> getAllLoans() {
         return service.getAllLoans();
     }
+
+
+
 
     @GetMapping("/{id}")
     public Optional<SmeLoanRegistration> getLoanById(@PathVariable Long id) {
@@ -35,5 +35,13 @@ public class SmeLoanRegistrationController {
     public void deleteLoan(@PathVariable Long id) {
         service.deleteLoan(id);
     }
+
+    @GetMapping("/status/{status}")
+    public List<SmeLoanRegistrationDTO> getLoansByStatus(@PathVariable String status) {
+        return service.getLoansByStatus(status);
+    }
+
+
+
 }
 
