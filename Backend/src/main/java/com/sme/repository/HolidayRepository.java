@@ -11,21 +11,7 @@ import java.util.List;
 @Repository
 public interface HolidayRepository extends JpaRepository<Holiday, Long> {
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
      List<Holiday> findByBranchId(Long branchId);
 
      boolean existsByBranchAndHolidayDate(Branch branch, Date holidayDate);
-=======
-=======
->>>>>>> Stashed changes
-    // ✅ Find holidays by branch
-    List<Holiday> findByBranchId(Long branchId);
-
-    // ✅ Check if a holiday already exists for a branch
-    boolean existsByBranchAndHolidayDate(Branch branch, Date holidayDate);
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 }

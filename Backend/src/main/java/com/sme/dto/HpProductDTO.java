@@ -12,15 +12,7 @@ public class HpProductDTO {
     private BigDecimal price;
     private Long productTypeId;
     private Long dealerRegistrationId;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
     private BigDecimal commissionFee; // ✅ Ensure this is included
-=======
-    private BigDecimal commissionFee;
->>>>>>> Stashed changes
-=======
-    private BigDecimal commissionFee;
->>>>>>> Stashed changes
 
     public Status getStatus() {
         return Status.fromCode(this.status);
