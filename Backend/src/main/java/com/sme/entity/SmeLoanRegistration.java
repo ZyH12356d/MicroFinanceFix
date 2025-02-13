@@ -53,14 +53,13 @@ public class SmeLoanRegistration {
         this.status = status.getCode();
     }
 
-    @Column(name = "due_date", nullable = false)
+    @Column(name = "due_date")
     private LocalDateTime dueDate;
 
-    @Column(name = "repayment_start_date", nullable = false)
+    @Column(name = "repayment_start_date")
     private LocalDateTime repaymentStartDate;
 
-    @Column(name = "disbursement_date")
-    private Date disbursementDate;
+
 
     @ManyToOne
     @JoinColumn(name = "current_account_id", nullable = false)

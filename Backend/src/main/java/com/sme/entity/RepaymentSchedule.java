@@ -31,7 +31,7 @@ public class RepaymentSchedule {
     private BigDecimal interestOverDue;
 
     @Column(name = "status", nullable = false)
-    private boolean status;
+    private Integer status;
 
     @Column(name = "remaining_principal", nullable = false)
     private BigDecimal remainingPrincipal;

@@ -45,7 +45,6 @@ public class SmeLoanRegistrationService {
         loan.setStatus(dto.getStatus());
         loan.setDueDate(dto.getDueDate());
         loan.setRepaymentStartDate(dto.getRepaymentStartDate());
-        loan.setDisbursementDate(dto.getDisbursementDate());
 
         loan.setCurrentAccount(currentAccount);
         loan.setCollateral(collateral);
