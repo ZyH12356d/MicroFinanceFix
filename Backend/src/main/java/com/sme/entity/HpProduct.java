@@ -34,13 +34,24 @@ public class HpProduct {
     @Column(name = "product_type_id", nullable = false)
     private int productTypeId;
 
+<<<<<<< Updated upstream
     @Column(name = "dealer_registration_id", nullable = false)
     private int dealerRegistrationId;
+=======
+    @ManyToOne
+    @JoinColumn(name = "dealer_registration_id", nullable = false)
+    private DealerRegistration dealerRegistration; // ✅ Corrected mapping
+>>>>>>> Stashed changes
 
     @Column(name = "hp_registration_id", nullable = false)
     private int hpRegistrationId;
 
+<<<<<<< Updated upstream
     @Column(name = "comission_fee")
+=======
+
+    @Column(name = "commission_fee", precision = 10, scale = 2, nullable = false)
+>>>>>>> Stashed changes
     private BigDecimal commissionFee;
 
 }
