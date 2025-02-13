@@ -4,7 +4,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 
+<<<<<<< Updated upstream
 
+=======
+import java.sql.Timestamp;
+>>>>>>> Stashed changes
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -44,6 +48,11 @@ public class DealerRegistration {
 
     @OneToMany(mappedBy = "dealerRegistration", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HpProduct> hpProducts;
+<<<<<<< Updated upstream
+=======
+
+ }
+>>>>>>> Stashed changes
 
 
  }

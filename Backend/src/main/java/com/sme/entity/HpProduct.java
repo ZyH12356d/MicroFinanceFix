@@ -37,12 +37,18 @@ public class HpProduct {
     @ManyToOne
     @JoinColumn(name = "dealer_registration_id", nullable = false)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     private DealerRegistration dealerRegistration; // ✅ Corrected mapping
 
     @Column(name = "hp_registration_id", nullable = false)
     private int hpRegistrationId;
 
     @Column(name = "comission_fee", precision = 10, scale = 2)
+=======
+    private DealerRegistration dealerRegistration;
+
+    @Column(name = "commission_fee", precision = 10, scale = 2, nullable = false)
+>>>>>>> Stashed changes
 =======
     private DealerRegistration dealerRegistration;
 

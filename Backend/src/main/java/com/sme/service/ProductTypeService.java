@@ -25,7 +25,11 @@ public class ProductTypeService {
     public ProductTypeDTO createProductType(ProductTypeDTO productTypeDTO) {
         ProductType productType = modelMapper.map(productTypeDTO, ProductType.class);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         productType.setStatus(Status.APPROVED); // Default to active
+=======
+        productType.setStatus(Status.ACTIVE); // Default to active
+>>>>>>> Stashed changes
 =======
         productType.setStatus(Status.ACTIVE); // Default to active
 >>>>>>> Stashed changes
@@ -36,7 +40,11 @@ public class ProductTypeService {
     // ✅ Get All Active Product Types
     public List<ProductTypeDTO> getAllActiveProductTypes() {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         List<ProductType> productTypes = productTypeRepository.findByStatus(Status.ACTIVE);
+=======
+        List<ProductType> productTypes = productTypeRepository.findByStatus(1);
+>>>>>>> Stashed changes
 =======
         List<ProductType> productTypes = productTypeRepository.findByStatus(1);
 >>>>>>> Stashed changes

@@ -2,10 +2,15 @@ package com.sme.service;
 
 import com.google.api.client.auth.oauth2.Credential;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import com.google.api.client.json.JsonFactory;
 
 
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+=======
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+
+>>>>>>> Stashed changes
 =======
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 
@@ -15,6 +20,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
@@ -27,6 +33,8 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.nio.file.Paths;
 =======
+=======
+>>>>>>> Stashed changes
 import com.google.api.client.json.JsonFactory;
 
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -43,6 +51,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.file.Path;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 import java.util.*;
 
@@ -54,7 +65,10 @@ public class GoogleCalendarService {
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR_READONLY);
@@ -71,16 +85,22 @@ public class GoogleCalendarService {
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 .setDataStoreFactory(new FileDataStoreFactory(Paths.get(TOKENS_DIRECTORY_PATH).toFile()))
                 .setAccessType("offline")
                 .build();
 
 
 =======
+=======
+>>>>>>> Stashed changes
                 .setDataStoreFactory(new FileDataStoreFactory(new File(TOKENS_DIRECTORY_PATH)))
                 .setAccessType("offline")
                 .build();
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
     }
@@ -94,7 +114,11 @@ public class GoogleCalendarService {
                 .build();
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         String calendarId = "en.mm#holiday@group.v.calendar.google.com"; // Myanmar Holidays Calendar ID
+=======
+        String calendarId = "en-gb.mm#holiday@group.v.calendar.google.com"; // Myanmar Holidays Calendar ID
+>>>>>>> Stashed changes
 =======
         String calendarId = "en-gb.mm#holiday@group.v.calendar.google.com"; // Myanmar Holidays Calendar ID
 >>>>>>> Stashed changes

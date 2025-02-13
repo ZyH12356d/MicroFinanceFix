@@ -2,7 +2,10 @@ package com.sme.controller;
 
 import com.sme.dto.ProductTypeDTO;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import com.sme.entity.Status;
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 import com.sme.service.ProductTypeService;
@@ -49,7 +52,11 @@ public class ProductTypeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProductType(@PathVariable Long id) {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         productTypeService.deleteProductType(2L);
+=======
+        productTypeService.deleteProductType(id);
+>>>>>>> Stashed changes
 =======
         productTypeService.deleteProductType(id);
 >>>>>>> Stashed changes

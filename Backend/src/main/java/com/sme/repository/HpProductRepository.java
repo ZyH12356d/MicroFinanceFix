@@ -1,6 +1,7 @@
 package com.sme.repository;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import com.sme.entity.HpProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HpProductRepository extends JpaRepository<HpProduct, Long> {
 =======
+=======
+>>>>>>> Stashed changes
 import com.sme.entity.DealerRegistration;
 import com.sme.entity.HpProduct;
 import com.sme.entity.ProductType;
@@ -26,5 +29,8 @@ public interface HpProductRepository extends JpaRepository<HpProduct, Long> {
     List<HpProduct> findByProductType(ProductType productType);
 
     List<HpProduct> findByDealerRegistration(DealerRegistration dealerRegistration);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }

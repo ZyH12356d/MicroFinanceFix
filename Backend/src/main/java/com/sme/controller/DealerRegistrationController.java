@@ -34,7 +34,10 @@ public class DealerRegistrationController {
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     // ✅ Update Dealer
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     @PutMapping("/{id}")
