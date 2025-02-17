@@ -82,7 +82,6 @@ public class SmeLoanRegistrationService {
         dto.setStatus(loan.getStatus());
         dto.setDueDate(loan.getDueDate());
         dto.setRepaymentStartDate(loan.getRepaymentStartDate());
-        dto.setDisbursementDate(loan.getDisbursementDate());
 
         // Set Current Account ID if exists
         if (loan.getCurrentAccount() != null) {
@@ -101,12 +100,9 @@ public class SmeLoanRegistrationService {
     // Get loans by status and return DTOs
     public List<SmeLoanRegistrationDTO> getLoansByStatus(String statusStr) {
         try {
-            // Convert Status Enum to Integer Code
-            Status statusEnum = Status.valueOf(statusStr.toUpperCase());
-            int statusCode = statusEnum.getCode();
 
             // Fetch loans by status code
-            List<SmeLoanRegistration> loans = repository.findByStatus(statusCode);
+            List<SmeLoanRegistration> loans = repository.findByStatus(1);
 
             // Convert Entity List to DTO List
             return loans.stream().map(this::convertToDTO).collect(Collectors.toList());

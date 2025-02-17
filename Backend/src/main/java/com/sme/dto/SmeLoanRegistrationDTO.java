@@ -1,5 +1,6 @@
 package com.sme.dto;
 
+import com.sme.annotation.StatusConverter;
 import com.sme.entity.Status;
 import lombok.Data;
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ public class SmeLoanRegistrationDTO {
     private Long repaymentDuration;
     private BigDecimal documentFee;
     private BigDecimal serviceCharges;
+    @StatusConverter
     private Integer status;
     private Long currentAccountId;
     private Long collateralId;
@@ -22,13 +24,7 @@ public class SmeLoanRegistrationDTO {
     private LocalDateTime repaymentStartDate;
     private Date disbursementDate;
 
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
 
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
 
 
 }
