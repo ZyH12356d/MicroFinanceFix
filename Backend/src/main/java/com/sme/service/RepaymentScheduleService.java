@@ -36,6 +36,7 @@ public class RepaymentScheduleService {
         BigDecimal loanAmount = loan.getLoanAmount();
         BigDecimal interestRate = loan.getInterestRate().divide(BigDecimal.valueOf(100));
         Long repaymentPeriod = loan.getRepaymentDuration();
+        Integer gracePeriod = loan.getGracePeriod(); // Get grace period in days
         LocalDate startDate = loan.getRepaymentStartDate().toLocalDate();
 
         BigDecimal monthlyInterestRate = interestRate.divide(BigDecimal.valueOf(12), 4, BigDecimal.ROUND_HALF_UP);
@@ -52,9 +53,13 @@ public class RepaymentScheduleService {
             BigDecimal principalAmount = monthlyPayment.subtract(interestAmount).setScale(2, BigDecimal.ROUND_HALF_UP);
             remainingBalance = remainingBalance.subtract(principalAmount).setScale(2, BigDecimal.ROUND_HALF_UP);
 
+            LocalDate dueDate = startDate.plusMonths(i);
+            LocalDate graceEndDate = dueDate.plusDays(gracePeriod); // ✅ Grace period added
+
             RepaymentSchedule schedule = new RepaymentSchedule();
             schedule.setSmeLoan(loan);
-            schedule.setDueDate(startDate.plusMonths(i));
+            schedule.setDueDate(dueDate);
+            schedule.setGraceEndDate(graceEndDate); // ✅ Store grace end date
             schedule.setInterestAmount(interestAmount);
             schedule.setPrincipalAmount(principalAmount);
             schedule.setRemainingPrincipal(remainingBalance);
@@ -68,6 +73,7 @@ public class RepaymentScheduleService {
         repaymentScheduleRepository.saveAll(schedules);
     }
 
+
     public List<RepaymentScheduleDTO> getRepaymentSchedule(Long loanId) {
         List<RepaymentSchedule> schedules = repaymentScheduleRepository.findBySmeLoanId(loanId);
         return schedules.stream().map(this::convertToDTO).collect(Collectors.toList());
@@ -77,6 +83,7 @@ public class RepaymentScheduleService {
         RepaymentScheduleDTO dto = new RepaymentScheduleDTO();
         dto.setId(schedule.getId());
         dto.setDueDate(schedule.getDueDate());
+        dto.setGraceEndDate(schedule.getGraceEndDate());
         dto.setInterestAmount(schedule.getInterestAmount());
         dto.setPrincipalAmount(schedule.getPrincipalAmount());
         dto.setLateFee(schedule.getLateFee());

@@ -18,7 +18,10 @@ public class RepaymentSchedule {
     private Long id;
 
     @Column(name = "due_date", nullable = false)
-    private LocalDate dueDate;  // ✅ Changed from Date to LocalDate
+    private LocalDate dueDate;
+
+    @Column(name = "grace_end", nullable = false)
+    private LocalDate graceEndDate;
 
     @Column(name = "interest_amount", nullable = false)
     private BigDecimal interestAmount = BigDecimal.ZERO;

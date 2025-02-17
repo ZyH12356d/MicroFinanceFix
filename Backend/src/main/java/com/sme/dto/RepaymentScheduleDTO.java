@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class RepaymentScheduleDTO {
     private Long id;
     private LocalDate dueDate;
+    private LocalDate graceEndDate;
     private BigDecimal interestAmount;
     private BigDecimal principalAmount;
     private BigDecimal lateFee;

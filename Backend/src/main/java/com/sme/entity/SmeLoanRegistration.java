@@ -25,11 +25,7 @@ public class SmeLoanRegistration {
     @Column(name = "grace_period", nullable = false)
     private Integer gracePeriod;
 
-    @Column(name = "grace_start")
-    private LocalDate graceStartDate;
 
-    @Column(name = "grace_end")
-    private LocalDate graceEndDate;
 
     @Column(name = "repayment_duration", nullable = false)
     private Long repaymentDuration;
