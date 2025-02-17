@@ -1,12 +1,8 @@
 package com.sme.controller;
 
 import com.sme.dto.CollateralDTO;
-import com.sme.entity.CIF;
-import com.sme.entity.Collateral;
-import com.sme.repository.CIFRepository;
 import com.sme.service.CollateralService;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,71 +11,37 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/collaterals")
+@RequiredArgsConstructor
 public class CollateralController {
 
-    @Autowired
-    private CollateralService collateralService;
-
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    private CIFRepository cifRepository;
+    private final CollateralService collateralService;
 
     @GetMapping
-    public List<CollateralDTO> getAllCollaterals() {
-        return collateralService.getAllCollaterals();
+    public ResponseEntity<List<CollateralDTO>> getAllCollaterals() {
+        return ResponseEntity.ok(collateralService.getAllCollaterals());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CollateralDTO> getCollateralById(@PathVariable Long id) {
-        Optional<CollateralDTO> collateral = collateralService.getCollateralById(id);
-        return collateral.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return collateralService.getCollateralById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<CollateralDTO> createCollateral(@RequestBody CollateralDTO collateralDTO) {
-        if (collateralDTO.getCifId() == null) {
-            return ResponseEntity.badRequest().body(null);
-        }
-
-        // Ensure CIF exists
-        CIF cif = cifRepository.findById(collateralDTO.getCifId())
-                .orElseThrow(() -> new RuntimeException("CIF not found"));
-
-        // Convert DTO → Entity
-        Collateral collateral = modelMapper.map(collateralDTO, Collateral.class);
-        collateral.setCif(cif);  // Set CIF relationship
-
-        // Call service and receive DTO response
-        CollateralDTO responseDTO = collateralService.saveCollateral(collateral);
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok(collateralService.createCollateral(collateralDTO));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CollateralDTO> updateCollateral(@PathVariable Long id, @RequestBody CollateralDTO collateralDTO) {
-        if (collateralDTO.getCifId() == null) {
-            return ResponseEntity.badRequest().body(null);
-        }
-
-        // Ensure CIF exists before updating
-        CIF cif = cifRepository.findById(collateralDTO.getCifId())
-                .orElseThrow(() -> new RuntimeException("CIF not found"));
-
-        // Convert DTO → Entity
-        Collateral collateral = modelMapper.map(collateralDTO, Collateral.class);
-        collateral.setCif(cif);  // Set CIF relationship
-
-        // Call service to update collateral and return DTO response
-        CollateralDTO updatedDTO = collateralService.updateCollateral(id, collateral);
-        return ResponseEntity.ok(updatedDTO);
+        return collateralService.updateCollateral(id, collateralDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
-
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCollateral(@PathVariable Long id) {
-        collateralService.deleteCollateral(id);
-        return ResponseEntity.noContent().build();
+        return collateralService.deleteCollateral(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }

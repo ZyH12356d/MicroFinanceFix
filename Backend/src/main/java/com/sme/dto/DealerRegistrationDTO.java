@@ -16,11 +16,5 @@ public class DealerRegistrationDTO {
     private int addressId;
     private int currentAccountId;
 
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
 
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
 }

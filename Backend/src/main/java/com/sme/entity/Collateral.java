@@ -3,9 +3,9 @@ package com.sme.entity;
 import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -30,14 +30,6 @@ public class Collateral {
     private Integer status;
 
 
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
-
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
-
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date date;
@@ -49,6 +41,6 @@ public class Collateral {
     @JoinColumn(name = "cif_id", nullable = false)
     private CIF cif;
 
-
-
+    @OneToMany(mappedBy = "collateral", cascade = CascadeType.ALL)
+    private List<SmeLoanCollateral> smeLoanCollaterals;
 }

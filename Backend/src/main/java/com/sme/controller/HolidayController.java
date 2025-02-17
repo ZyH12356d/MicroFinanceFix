@@ -1,6 +1,7 @@
 package com.sme.controller;
 
 import com.sme.entity.Holiday;
+import com.sme.service.HolidayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,12 @@ public class HolidayController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error: " + e.getMessage());
         }
+    }
+
+    @PostMapping("/generate-weekends/{year}")
+    public ResponseEntity<String> generateWeekends(@PathVariable int year) {
+        holidayService.generateWeekendsForYear(year);
+        return ResponseEntity.ok("Weekend holidays for year " + year + " added successfully!");
     }
 
     // ✅ Get holidays by branch
