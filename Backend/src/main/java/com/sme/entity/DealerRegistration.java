@@ -1,10 +1,12 @@
 package com.sme.entity;
 
+import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -12,7 +14,7 @@ import java.sql.Timestamp;
 public class DealerRegistration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "company_name")
     private String companyName;
@@ -21,19 +23,13 @@ public class DealerRegistration {
     private String phoneNumber;
 
     @Column(name = "registration_date")
-    private Timestamp registrationDate;
+    private LocalDateTime registrationDate;
 
+    @StatusConverter
     @Column(name = "status")
     private Integer status;
 
 
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
-
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
 
     @Column(name = "address_id", nullable = false)
     private int addressId;
@@ -41,5 +37,8 @@ public class DealerRegistration {
     @Column(name = "current_account_id", nullable = false)
     private int currentAccountId;
 
- }
+    @OneToMany(mappedBy = "dealerRegistration", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HpProduct> hpProducts;
 
+
+ }

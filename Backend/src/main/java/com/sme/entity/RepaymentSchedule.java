@@ -1,5 +1,6 @@
 package com.sme.entity;
 
+import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -30,8 +31,9 @@ public class RepaymentSchedule {
     @Column(name = "interest_over_due", nullable = false)
     private BigDecimal interestOverDue;
 
+    @StatusConverter
     @Column(name = "status", nullable = false)
-    private boolean status;
+    private Integer status;
 
     @Column(name = "remaining_principal", nullable = false)
     private BigDecimal remainingPrincipal;

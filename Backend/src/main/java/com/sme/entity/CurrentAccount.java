@@ -1,5 +1,6 @@
 package com.sme.entity;
 
+import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,16 +23,11 @@ public class CurrentAccount {
     @Column(nullable = false, length = 45)
     private BigDecimal balance;
 
+    @StatusConverter
     @Column(name = "account_status", nullable = false, length = 45)
     private Integer status;
 
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
 
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_created", nullable = false)

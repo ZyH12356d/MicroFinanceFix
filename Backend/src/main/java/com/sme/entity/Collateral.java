@@ -1,5 +1,6 @@
 package com.sme.entity;
 
+import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,9 +22,10 @@ public class Collateral {
     @Column(name = "value", nullable = false, precision = 15, scale = 2)
     private BigDecimal value;
 
-    @Column(name = "description", nullable = false, length = 255)
+    @Column(name = "description", nullable = false, length = 1000)
     private String description;
 
+    @StatusConverter
     @Column(nullable = false, length = 45)
     private Integer status;
 
