@@ -39,6 +39,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 05320bf (first commit1)
         <!-- Google OAuth Client -->
         <dependency>
             <groupId>com.google.oauth-client</groupId>
@@ -46,6 +51,7 @@
             <version>1.34.1</version>
         </dependency>
 
+<<<<<<< HEAD
 
 
         <!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-calendar -->
@@ -58,6 +64,8 @@
 
 
 
+=======
+>>>>>>> 05320bf (first commit1)
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -68,12 +76,6 @@
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.cloudinary</groupId>
-            <artifactId>cloudinary-core</artifactId>
-            <version>1.32.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client -->
@@ -156,7 +158,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <version>1.18.36</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -191,6 +194,7 @@
                     </excludes>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
