@@ -35,8 +35,9 @@ public class AddressService {
 
         if (optionalAddress.isPresent()) {
             Address address = optionalAddress.get();
-            address.setCity(addressDetails.getCity());
-            address.setTown(addressDetails.getTown());
+            address.setRegion(addressDetails.getRegion());
+             address.setDistrict(addressDetails.getDistrict());
+             address.setTownship(addressDetails.getTownship());
             address.setStreet(addressDetails.getStreet());
             return addressRepository.save(address);
         } else {
