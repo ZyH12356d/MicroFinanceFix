@@ -4,6 +4,7 @@ import com.sme.entity.Address;
 import com.sme.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,11 +26,13 @@ public class AddressService {
     }
 
     // Create a new address
+    @Transactional
     public Address createAddress(Address address) {
         return addressRepository.save(address);
     }
 
     // Update an existing address
+    @Transactional
     public Address updateAddress(long id, Address addressDetails) {
         Optional<Address> optionalAddress = addressRepository.findById(id);
 
@@ -46,6 +49,7 @@ public class AddressService {
     }
 
     // Delete an address by ID
+    @Transactional
     public void deleteAddress(long id) {
         addressRepository.deleteById(id);
     }

@@ -6,11 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/addresses") // Base URL
+@RequestMapping("/api/addresses")
 public class AddressController {
 
     @Autowired
@@ -32,7 +33,8 @@ public class AddressController {
     // Create a new address
     @PostMapping
     public ResponseEntity<Address> createAddress(@RequestBody Address address) {
-        return ResponseEntity.ok(addressService.createAddress(address));
+        Address savedAddress = addressService.createAddress(address);
+        return ResponseEntity.created(URI.create("/api/addresses/" + savedAddress.getId())).body(savedAddress);
     }
 
     // Update an existing address

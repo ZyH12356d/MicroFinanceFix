@@ -26,7 +26,6 @@ public class SmeLoanRegistration {
     private Integer gracePeriod;
 
 
-
     @Column(name = "repayment_duration", nullable = false)
     private Long repaymentDuration;
 

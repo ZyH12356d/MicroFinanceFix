@@ -85,6 +85,8 @@ public class BranchService {
             address.setStreet(addressDTO.getStreet());
 
             branch.setAddress(address);
+        } else {
+            System.out.println("something went wrong");
         }
 
         return branch;
