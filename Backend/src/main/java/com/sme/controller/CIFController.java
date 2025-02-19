@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/cifs")
+@CrossOrigin("http://localhost:4200")
 public class CIFController {
 
     @Autowired

@@ -50,8 +50,8 @@ public class HpScheduleService {
             schedule.setPrincipalAmount(monthlyInstallment.longValue());
             schedule.setLateDay(0L);
             schedule.setLateFee(BigDecimal.ZERO);
-            schedule.setPrincipalOd("N/A");
-            schedule.setInterestOd("N/A");
+            schedule.setPrincipalOd(BigDecimal.ZERO);
+            schedule.setInterestOd(BigDecimal.ZERO);
             schedule.setInstallmentNo("Installment " + i);
             schedule.setHpRegistrationId(hpRegistrationId);
             schedule.setLateFeePaidDate(null);
