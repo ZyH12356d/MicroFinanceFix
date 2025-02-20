@@ -1,11 +1,11 @@
 package com.sme.dto;
 
 import com.sme.annotation.StatusConverter;
-import com.sme.entity.Status;
 import lombok.Data;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class SmeLoanRegistrationDTO {
@@ -13,18 +13,15 @@ public class SmeLoanRegistrationDTO {
     private BigDecimal loanAmount;
     private BigDecimal interestRate;
     private Integer gracePeriod;
+    private LocalDate graceStartDate;
+    private LocalDate graceEndDate;
     private Long repaymentDuration;
     private BigDecimal documentFee;
     private BigDecimal serviceCharges;
     @StatusConverter
     private Integer status;
-    private Long currentAccountId;
-    private Long collateralId;
     private LocalDateTime dueDate;
     private LocalDateTime repaymentStartDate;
-    private Date disbursementDate;
-
-
-
-
+    private Long currentAccountId;
+    private List<Long> collateralIds;
 }

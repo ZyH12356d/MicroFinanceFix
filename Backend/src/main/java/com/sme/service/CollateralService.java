@@ -1,78 +1,69 @@
 package com.sme.service;
 
- import com.sme.dto.CollateralDTO;
- import com.sme.entity.CIF;
- import com.sme.entity.Collateral;
- import com.sme.repository.CIFRepository;
- import com.sme.repository.CollateralRepository;
+import com.sme.dto.CollateralDTO;
+import com.sme.entity.CIF;
+import com.sme.entity.Collateral;
+import com.sme.repository.CollateralRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CollateralService {
-@Autowired
-    private CollateralRepository collateralRepository;
 
-    @Autowired
-    private CIFRepository cifRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
-
-
+    private final CollateralRepository collateralRepository;
+    private final ModelMapper modelMapper;
 
     public List<CollateralDTO> getAllCollaterals() {
-        List<Collateral> collaterals = collateralRepository.findAll();
-        return collaterals.stream()
+        return collateralRepository.findAll().stream()
                 .map(collateral -> modelMapper.map(collateral, CollateralDTO.class))
                 .collect(Collectors.toList());
     }
 
     public Optional<CollateralDTO> getCollateralById(Long id) {
-        Optional<Collateral> collateral = collateralRepository.findById(id);
-        return collateral.map(c -> modelMapper.map(c, CollateralDTO.class));
+        return collateralRepository.findById(id)
+                .map(collateral -> modelMapper.map(collateral, CollateralDTO.class));
     }
 
-//    public CollateralDTO saveCollateral(CollateralDTO collateralDTO) {
-//        Collateral collateral = modelMapper.map(collateralDTO, Collateral.class);
-//        Collateral savedCollateral = collateralRepository.save(collateral);
-//        return modelMapper.map(savedCollateral, CollateralDTO.class);
-//    }
+    @Transactional
+    public CollateralDTO createCollateral(CollateralDTO collateralDTO) {
+        if (collateralDTO.getId() != null && collateralRepository.existsById(collateralDTO.getId())) {
+            throw new RuntimeException("Collateral with ID " + collateralDTO.getId() + " already exists!");
+        }
 
-    public CollateralDTO updateCollateral(Long id, Collateral updatedCollateral) {
-        // Find existing collateral
-        Collateral existingCollateral = collateralRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Collateral not found"));
+        Collateral collateral = modelMapper.map(collateralDTO, Collateral.class);
 
-        // Update fields
-        existingCollateral.setCollateralType(updatedCollateral.getCollateralType());
-        existingCollateral.setValue(updatedCollateral.getValue());
-        existingCollateral.setDescription(updatedCollateral.getDescription());
-        existingCollateral.setStatus(updatedCollateral.getStatus());
-        existingCollateral.setDate(updatedCollateral.getDate());
-        existingCollateral.setCollateralCode(updatedCollateral.getCollateralCode());
-        existingCollateral.setCif(updatedCollateral.getCif());
+        // ✅ Ensure correct CIF reference
+        collateral.setCif(new CIF());
+        collateral.getCif().setId(collateralDTO.getCifId());
 
-        // Save and return updated DTO
-        Collateral savedCollateral = collateralRepository.save(existingCollateral);
-        return modelMapper.map(savedCollateral, CollateralDTO.class);
+        collateral.setId(null);  // ✅ Ensure it's treated as new
+        collateral = collateralRepository.save(collateral);
+        return modelMapper.map(collateral, CollateralDTO.class);
+    }
+
+    @Transactional
+    public Optional<CollateralDTO> updateCollateral(Long id, CollateralDTO collateralDTO) {
+        return collateralRepository.findById(id).map(existingCollateral -> {
+            modelMapper.map(collateralDTO, existingCollateral);
+            existingCollateral.setId(id);  // ✅ Ensure ID remains the same
+            existingCollateral = collateralRepository.save(existingCollateral);
+            return modelMapper.map(existingCollateral, CollateralDTO.class);
+        });
     }
 
 
-    public void deleteCollateral(Long id) {
-        collateralRepository.deleteById(id);
+    @Transactional
+    public boolean deleteCollateral(Long id) {
+        if (collateralRepository.existsById(id)) {
+            collateralRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
-
-    public CollateralDTO saveCollateral(Collateral collateral) {
-        Collateral savedCollateral = collateralRepository.save(collateral);
-        return modelMapper.map(savedCollateral, CollateralDTO.class);
-    }
-
 }
-

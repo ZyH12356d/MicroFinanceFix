@@ -39,13 +39,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Google API Client -->
-        <dependency>
-            <groupId>com.google.api-client</groupId>
-            <artifactId>google-api-client</artifactId>
-            <version>1.32.1</version>  <!-- Change this to match the Calendar API requirement -->
-        </dependency>
-
         <!-- Google OAuth Client -->
         <dependency>
             <groupId>com.google.oauth-client</groupId>
@@ -57,7 +50,7 @@
         <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client-jackson2</artifactId>
-            <version>1.43.3</version>
+            <version>1.42.3</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-calendar -->
@@ -124,12 +117,6 @@
             <version>1.42.3</version>  <!-- ✅ Ensure compatibility -->
         </dependency>
 
-        <!-- Jackson for JSON Processing -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.15.0</version>
-        </dependency>
 
         <dependency>
             <groupId>com.google.oauth-client</groupId>
@@ -148,6 +135,29 @@
             <artifactId>modelmapper</artifactId>
             <version>3.1.0</version>
         </dependency>
+
+        <!-- JasperReports Library -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>6.20.0</version>
+        </dependency>
+
+        <!-- Apache POI for Excel Export -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.3</version>
+        </dependency>
+
+        <!-- Font Extensions (for PDF compatibility) -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-fonts</artifactId>
+            <version>6.20.0</version>
+        </dependency>
+
+
 
         <dependency>
             <groupId>org.projectlombok</groupId>

@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +53,34 @@ public class HolidayService {
                 }
             }
         }
+    }
+
+    @Transactional
+    public void generateWeekendsForYear(int year) {
+        List<Branch> branches = branchRepository.findAll(); // ✅ Get all branches
+        List<Holiday> holidays = new ArrayList<>();
+
+        // Loop through all days of the year
+        LocalDate startDate = LocalDate.of(year, 1, 1);
+        LocalDate endDate = LocalDate.of(year, 12, 31);
+
+        while (!startDate.isAfter(endDate)) {
+            DayOfWeek dayOfWeek = startDate.getDayOfWeek();
+
+            // ✅ Check if the day is Saturday or Sunday
+            if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
+                for (Branch branch : branches) {
+                    Holiday holiday = new Holiday();
+                    holiday.setHolidayDate(java.sql.Date.valueOf(startDate));
+                    holiday.setDescription(dayOfWeek.name() + " (Weekend)");
+                    holiday.setBranch(branch);
+                    holidays.add(holiday);
+                }
+            }
+            startDate = startDate.plusDays(1);
+        }
+
+        holidayRepository.saveAll(holidays); // ✅ Bulk insert all weekends
     }
 
     // ✅ Get holidays by branch

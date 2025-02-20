@@ -44,16 +44,10 @@ public class HpRegistration {
     private Integer status;
 
 
-
-    @Column(name = "disbursement_id", nullable = false)
-    private Long disbursementId;
-
     @Column(name = "current_account_id", nullable = false)
     private Long currentAccountId;
 
-    @Column(name = "disbursement_date")
-    private LocalDateTime disbursementDate;
 
     @Column(name = "hp_product_id", nullable = false)
-    private Long hpProductId;  // ✅ Add product reference
+    private Long hpProductId;
 }

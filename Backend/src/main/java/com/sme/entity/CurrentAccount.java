@@ -28,7 +28,6 @@ public class CurrentAccount {
     private Integer status;
 
 
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_created", nullable = false)
     private Date dateCreated;

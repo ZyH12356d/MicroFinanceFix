@@ -1,6 +1,7 @@
 package com.sme.controller;
 
 import com.sme.dto.HpProductDTO;
+import com.sme.service.HpProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
