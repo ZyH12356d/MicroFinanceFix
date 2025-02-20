@@ -24,9 +24,9 @@ public class ProductTypeService {
     @Transactional
     public ProductTypeDTO createProductType(ProductTypeDTO productTypeDTO) {
         ProductType productType = modelMapper.map(productTypeDTO, ProductType.class);
-
-        productType.setStatus(Status.ACTIVE); // Default to active
-
+ 
+        productType.setStatus(4); // Default to active
+ 
         ProductType savedProductType = productTypeRepository.save(productType);
         return modelMapper.map(savedProductType, ProductTypeDTO.class);
     }
@@ -34,7 +34,7 @@ public class ProductTypeService {
     // ✅ Get All Active Product Types
     public List<ProductTypeDTO> getAllActiveProductTypes() {
         List<ProductType> productTypes = productTypeRepository.findByStatus(Status.ACTIVE);
-
+ 
         return productTypes.stream()
                 .map(productType -> modelMapper.map(productType, ProductTypeDTO.class))
                 .collect(Collectors.toList());
@@ -65,7 +65,8 @@ public class ProductTypeService {
     public void deleteProductType(Long id) {
         ProductType productType = productTypeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product Type not found with ID: " + id));
-        productType.setStatus(Status.INACTIVE);
+ 
+        productType.setStatus(2);
         productTypeRepository.save(productType);
     }
 }

@@ -1,5 +1,6 @@
 package com.sme.entity;
 
+import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -31,17 +32,10 @@ public class RepaymentTransaction {
     @Column(name = "remaining_principal", nullable = false)
     private BigDecimal remainingPrincipal;
 
+    @StatusConverter
     @Column(name = "status", nullable = false)
     private Integer status;
 
-
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
-
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
 
     @ManyToOne
     @JoinColumn(name = "current_account_id", nullable = false)

@@ -1,10 +1,9 @@
 package com.sme.entity;
 
+import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,13 +25,8 @@ public class SmeLoanRegistration {
     @Column(name = "grace_period", nullable = false)
     private Integer gracePeriod;
 
-    @Column(name = "grace_start")
-    private LocalDate graceStartDate;
 
-    @Column(name = "grace_end")
-    private LocalDate graceEndDate;
-
-    @Column(name = "repayment_duration", nullable = false, length = 100)
+    @Column(name = "repayment_duration", nullable = false)
     private Long repaymentDuration;
 
     @Column(name = "document_fee", nullable = false)
@@ -41,17 +35,9 @@ public class SmeLoanRegistration {
     @Column(name = "service_charges", nullable = false)
     private BigDecimal serviceCharges;
 
+    @StatusConverter
     @Column(name = "status", nullable = false)
     private Integer status;
-
-
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
-
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
 
     @Column(name = "due_date")
     private LocalDateTime dueDate;
@@ -59,18 +45,13 @@ public class SmeLoanRegistration {
     @Column(name = "repayment_start_date")
     private LocalDateTime repaymentStartDate;
 
-
-
     @ManyToOne
     @JoinColumn(name = "current_account_id", nullable = false)
     private CurrentAccount currentAccount;
 
-    @ManyToOne
-    @JoinColumn(name = "collateral_id", nullable = false)
-    private Collateral collateral;
-
     @OneToMany(mappedBy = "smeLoan", cascade = CascadeType.ALL)
     private List<RepaymentSchedule> repaymentSchedules;
 
-
+    @OneToMany(mappedBy = "smeLoan", cascade = CascadeType.ALL)
+    private List<SmeLoanCollateral> smeLoanCollaterals;  
 }

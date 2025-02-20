@@ -32,10 +32,10 @@ public class HpSchedule {
     private BigDecimal lateFee;
 
     @Column(name = "principal_od")
-    private String principalOd;
+    private BigDecimal principalOd;
 
     @Column(name = "interest_od")
-    private String interestOd;
+    private BigDecimal interestOd;
 
     @Column(name = "installment_no")
     private String installmentNo;

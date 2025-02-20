@@ -1,11 +1,10 @@
 package com.sme.entity;
 
+import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,7 +15,7 @@ public class HpRegistration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "hp_number", nullable = false)
+    @Column(name = "hp_number", nullable = false, unique = true)
     private String hpNumber;
 
     @Column(name = "created_date", nullable = false)
@@ -40,25 +39,15 @@ public class HpRegistration {
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
+    @StatusConverter
     @Column(name = "status")
     private Integer status;
 
 
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
-
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
-
-    @Column(name = "disbursement_id", nullable = false)
-    private Long disbursementId;
-
     @Column(name = "current_account_id", nullable = false)
     private Long currentAccountId;
 
-    @Column(name = "disbusement_date")
-    private LocalDateTime disbursementDate;
 
+    @Column(name = "hp_product_id", nullable = false)
+    private Long hpProductId;
 }

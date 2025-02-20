@@ -1,5 +1,6 @@
 package com.sme.dto;
 
+import com.sme.annotation.StatusConverter;
 import com.sme.entity.Status;
 import lombok.Data;
 import java.math.BigDecimal;
@@ -10,15 +11,10 @@ public class CurrentAccountDTO {
     private Long id;
     private String accountNumber;
     private BigDecimal balance;
+    @StatusConverter
     private Integer status;
 
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
 
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
     private Date dateCreated;
     private BigDecimal holdAmount;
     private Long cifId;

@@ -1,27 +1,19 @@
 package com.sme.dto;
 
-import com.sme.entity.Status;
-import lombok.Getter;
-import lombok.Setter;
-
+import com.sme.annotation.StatusConverter;
+import lombok.Data;
+import java.math.BigDecimal;
 import java.util.Date;
-@Getter
-@Setter
+
+@Data
 public class CollateralDTO {
     private Long id;
     private String collateralType;
-    private String value;
+    private BigDecimal value;
     private String description;
+    @StatusConverter
     private Integer status;
     private Date date;
     private String collateralCode;
     private Long cifId;
-
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
-
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
 }

@@ -1,6 +1,6 @@
 package com.sme.repository;
 
-
+ 
 import com.sme.entity.DealerRegistration;
 import com.sme.entity.HpProduct;
 import com.sme.entity.ProductType;
@@ -19,5 +19,6 @@ public interface HpProductRepository extends JpaRepository<HpProduct, Long> {
     List<HpProduct> findByProductType(ProductType productType);
 
     List<HpProduct> findByDealerRegistration(DealerRegistration dealerRegistration);
+
 
 }

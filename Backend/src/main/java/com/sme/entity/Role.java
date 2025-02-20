@@ -1,5 +1,6 @@
 package com.sme.entity;
 
+import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -24,17 +25,12 @@ public class Role {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
+    @StatusConverter
     @Column(name = "status")
     private Integer status;
 
 
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
 
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users;

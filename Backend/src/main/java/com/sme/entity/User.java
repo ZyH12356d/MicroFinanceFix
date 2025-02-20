@@ -1,5 +1,6 @@
 package com.sme.entity;
 
+import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -30,13 +31,13 @@ public class User {
     @Column(name = "dob",nullable = false)
     private LocalDateTime dob;
 
-
     @Column(name = "created_at", nullable = false,updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at",nullable = false)
     private LocalDateTime updatedAt;
 
+    @StatusConverter
     @Column(name = "status")
     private Integer status;
 
@@ -44,13 +45,6 @@ public class User {
     private String profilePicture;
 
 
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
-
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)

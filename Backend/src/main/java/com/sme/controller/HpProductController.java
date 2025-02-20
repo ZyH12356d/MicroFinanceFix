@@ -1,6 +1,9 @@
 package com.sme.controller;
 
 import com.sme.dto.HpProductDTO;
+
+import com.sme.service.HpProductService;
+ 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +16,7 @@ public class HpProductController {
 
     @Autowired
     private HpProductService productService;
-
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+ 
     // ✅ Create HP Product
     @PostMapping
     public ResponseEntity<HpProductDTO> createHpProduct(@RequestBody HpProductDTO productDTO) {
@@ -26,9 +27,7 @@ public class HpProductController {
     @GetMapping
     public ResponseEntity<List<HpProductDTO>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
-=======
-=======
->>>>>>> Stashed changes
+    }
     // ✅ Create Product
     @PostMapping
     public ResponseEntity<HpProductDTO> createProduct(@RequestBody HpProductDTO productDTO) {
@@ -62,9 +61,6 @@ public class HpProductController {
     @GetMapping("/by-dealer/{dealerId}")
     public ResponseEntity<List<HpProductDTO>> getProductsByDealer(@PathVariable Long dealerId) {
         return ResponseEntity.ok(productService.getProductsByDealer(dealerId));
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
     }
 }

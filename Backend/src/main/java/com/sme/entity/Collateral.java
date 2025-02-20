@@ -1,10 +1,11 @@
 package com.sme.entity;
 
+import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,26 +16,16 @@ public class Collateral {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "collateral_type", nullable = false, length = 70)
-    private String collateralType;
-
     @Column(name = "value", nullable = false, precision = 15, scale = 2)
     private BigDecimal value;
 
     @Column(name = "description", nullable = false, length = 1000)
     private String description;
 
+    @StatusConverter
     @Column(nullable = false, length = 45)
     private Integer status;
 
-
-    public Status getStatus() {
-        return Status.fromCode(this.status);
-    }
-
-    public void setStatus(Status status) {
-        this.status = status.getCode();
-    }
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
@@ -47,6 +38,10 @@ public class Collateral {
     @JoinColumn(name = "cif_id", nullable = false)
     private CIF cif;
 
+    @ManyToOne
+    @JoinColumn(name = "collateral_type_id", nullable = false)
+    private CollateralType collateralType;
 
-
+    @OneToMany(mappedBy = "collateral", cascade = CascadeType.ALL)
+    private List<SmeLoanCollateral> smeLoanCollaterals;
 }

@@ -1,6 +1,9 @@
 package com.sme.controller;
 
 import com.sme.dto.DealerRegistrationDTO;
+
+import com.sme.service.DealerRegistrationService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,13 +35,7 @@ public class DealerRegistrationController {
         return ResponseEntity.ok(dealerService.getDealerById(id));
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    // ✅ Update Dealer
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+ 
     @PutMapping("/{id}")
     public ResponseEntity<DealerRegistrationDTO> updateDealer(
             @PathVariable Long id,
