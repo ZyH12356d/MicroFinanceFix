@@ -24,9 +24,9 @@ public interface CIFService {
 
     Optional<CIFDTO> getCIFById(Long id);
 
-    CIFDTO createCIF(CIFDTO cifDTO, MultipartFile frontNrc, MultipartFile backNrc) throws IOException;
+    CIFDTO createCIF(CIFDTO cifDTO) throws IOException;
 
-    CIFDTO updateCIF(Long id, CIFDTO cifDTO, MultipartFile frontNrc, MultipartFile backNrc) throws IOException;
+    CIFDTO updateCIF(Long id, CIFDTO cifDTO) throws IOException;
 
     void deleteCIF(Long id);
 }

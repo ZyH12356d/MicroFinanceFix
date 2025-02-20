@@ -29,7 +29,7 @@ public class CIFServiceImpl implements CIFService {
     private final CIFRepository cifRepository;
     private final BranchRepository branchRepository;
     private final ModelMapper modelMapper;
-    @Autowired
+
     private Cloudinary cloudinary;
 
     @Override
@@ -45,43 +45,35 @@ public class CIFServiceImpl implements CIFService {
     }
 
     @Override
-    public CIFDTO createCIF(CIFDTO cifDTO, MultipartFile frontNrc, MultipartFile backNrc) throws IOException {
+    @Transactional
+    public CIFDTO createCIF(CIFDTO cifDTO) throws IOException {
         CIF cif = modelMapper.map(cifDTO, CIF.class);
         cif.setCreatedAt(LocalDateTime.now());
 
-        // ✅ Set Branch (Ensure branch exists)
+
         Branch branch = branchRepository.findById(cifDTO.getBranchId())
                 .orElseThrow(() -> new RuntimeException("Branch not found with ID: " + cifDTO.getBranchId()));
         cif.setBranch(branch);
 
-        // ✅ Upload NRC images to Cloudinary
-        if (frontNrc != null) {
-            cif.setF_nrcPhoto(uploadImage(frontNrc));
-        }
-        if (backNrc != null) {
-            cif.setB_nrcPhoto(uploadImage(backNrc));
-        }
 
-        // ✅ Save CIF
+        cif.setF_nrcPhoto(cifDTO.getFNrcPhotoUrl()); // Make sure this matches frontend JSON key
+        cif.setB_nrcPhoto(cifDTO.getBNrcPhotoUrl());
+
+
         CIF savedCIF = cifRepository.save(cif);
         return modelMapper.map(savedCIF, CIFDTO.class);
     }
 
+
     @Override
-    public CIFDTO updateCIF(Long id, CIFDTO cifDTO, MultipartFile frontNrc, MultipartFile backNrc) throws IOException {
+    @Transactional
+    public CIFDTO updateCIF(Long id, CIFDTO cifDTO) throws IOException {
         CIF cif = cifRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("CIF not found with ID: " + id));
 
         // ✅ Update details
         modelMapper.map(cifDTO, cif);
 
-        // ✅ Upload new NRC images (if provided)
-        if (frontNrc != null) {
-            cif.setF_nrcPhoto(uploadImage(frontNrc));
-        }
-        if (backNrc != null) {
-            cif.setB_nrcPhoto(uploadImage(backNrc));
-        }
 
         CIF updatedCIF = cifRepository.save(cif);
         return modelMapper.map(updatedCIF, CIFDTO.class);

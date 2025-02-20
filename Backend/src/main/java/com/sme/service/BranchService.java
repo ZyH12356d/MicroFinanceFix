@@ -23,29 +23,46 @@ public class BranchService {
     private BranchRepository branchRepository;
 
     @Autowired
-    private AddressRepository addressRepository; // To fetch Address from DB
+    private AddressRepository addressRepository;
 
     @Autowired
     private ModelMapper modelMapper;
 
-    private String generateBranchCode() {
-        String lastBranchCode = branchRepository.findLastBranchCode();
+    private String getRegionCode(String region) {
+        if (region == null || region.trim().isEmpty()) {
+            return "UNK";
+        }
+
+
+        return region.trim().substring(0, Math.min(region.length(), 3)).toUpperCase();
+    }
+
+
+    private String getTownshipCode(String township) {
+        return township.length() >= 3 ? township.substring(0, 3).toUpperCase() : township.toUpperCase();
+    }
+
+    private String generateBranchCode(String region, String township) {
+        String regionCode = getRegionCode(region);
+        String townshipCode = getTownshipCode(township);
+        String lastBranchCode = branchRepository.findLastBranchCodeByRegionAndTownship(region, township);
 
         if (lastBranchCode == null || lastBranchCode.isEmpty()) {
-            return "B0001"; // First branch
+            return regionCode + "-" + townshipCode + "-0001";
         }
-
-        System.out.println("Last Branch Code: " + lastBranchCode);
 
         try {
-            int lastNumber = Integer.parseInt(lastBranchCode.substring(1));
+            int lastNumber = Integer.parseInt(lastBranchCode.substring(regionCode.length() + townshipCode.length() + 2));
             int newNumber = lastNumber + 1;
-            return "B" + String.format("%04d", newNumber);
+            return regionCode + "-" + townshipCode + "-" + String.format("%04d", newNumber);
         } catch (NumberFormatException e) {
             System.err.println("Error parsing branch code: " + lastBranchCode);
-            return "B0001";
+            return regionCode + "-" + townshipCode + "-0001";
         }
     }
+
+
+
 
 
     @Transactional
@@ -58,56 +75,25 @@ public class BranchService {
 
         branch.setCreatedDate(new Date());
         branch.setUpdatedDate(new Date());
-        branch.setBranchCode(generateBranchCode());
+        branch.setBranchCode(generateBranchCode(addressDTO.getRegion(), addressDTO.getDistrict()));
 
         Branch savedBranch = branchRepository.save(branch);
 
         return modelMapper.map(savedBranch, BranchDTO.class);
     }
 
-
-    // Convert Branch entity to DTO
-    private BranchDTO convertToDTO(Branch branch) {
-        return modelMapper.map(branch, BranchDTO.class);
-    }
-
-    // Convert DTO to Branch entity
-    private Branch convertToEntity(BranchDTO branchDTO) {
-        Branch branch = modelMapper.map(branchDTO, Branch.class);
-
-        if (branchDTO.getAddress() != null) {
-            AddressDTO addressDTO = branchDTO.getAddress();
-
-            Address address = new Address();
-            address.setId(addressDTO.getId()); // Ensure the ID is set (if updating existing address)
-             address.setDistrict(addressDTO.getDistrict());
-             address.setRegion(addressDTO.getRegion());
-            address.setStreet(addressDTO.getStreet());
-
-            branch.setAddress(address);
-        }
-
-        return branch;
-    }
-
-    // Get all branches (DTO format)
     public List<BranchDTO> getAllBranches() {
         List<Branch> branches = branchRepository.findAll();
         return branches.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
-    // Get branch by ID
     public Optional<BranchDTO> getBranchById(Long id) {
         Optional<Branch> branch = branchRepository.findById(id);
         return branch.map(this::convertToDTO);
     }
 
-
-
-    // Update an existing branch
     public BranchDTO updateBranch(Long id, BranchDTO branchDTO) {
         Optional<Branch> optionalBranch = branchRepository.findById(id);
-
         if (optionalBranch.isPresent()) {
             Branch branch = optionalBranch.get();
             branch.setName(branchDTO.getBranchName());
@@ -118,7 +104,6 @@ public class BranchService {
             branch.setCreatedDate(branchDTO.getCreatedDate());
             branch.setUpdatedDate(branchDTO.getUpdatedDate());
 
-            // Convert and update Address if provided
             if (branchDTO.getAddress() != null) {
                 AddressDTO addressDTO = branchDTO.getAddress();
                 Address address = new Address();
@@ -136,8 +121,11 @@ public class BranchService {
         }
     }
 
-    // Delete a branch
     public void deleteBranch(Long id) {
         branchRepository.deleteById(id);
+    }
+
+    private BranchDTO convertToDTO(Branch branch) {
+        return modelMapper.map(branch, BranchDTO.class);
     }
 }
