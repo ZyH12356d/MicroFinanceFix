@@ -56,7 +56,7 @@ public class CIFServiceImpl implements CIFService {
         cif.setBranch(branch);
 
 
-        cif.setF_nrcPhoto(cifDTO.getFNrcPhotoUrl()); // Make sure this matches frontend JSON key
+        cif.setF_nrcPhoto(cifDTO.getFNrcPhotoUrl());
         cif.setB_nrcPhoto(cifDTO.getBNrcPhotoUrl());
 
 

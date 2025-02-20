@@ -17,7 +17,7 @@ public class CurrentAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "account_number", nullable = false, length = 45, insertable = false, updatable = false)
+    @Column(name = "account_number", nullable = false, length = 45, insertable = false, updatable = false,unique = true)
     private String accountNumber;
 
     @Column(nullable = false, length = 45)

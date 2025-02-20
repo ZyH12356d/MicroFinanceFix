@@ -16,26 +16,30 @@ public class CurrentAccountController {
     @Autowired
     private CurrentAccountService currentAccountService;
 
-    // Get all Current Accounts
+    // ✅ Get all Current Accounts
     @GetMapping
     public List<CurrentAccountDTO> getAllCurrentAccounts() {
         return currentAccountService.getAllCurrentAccounts();
     }
 
-    // Get Current Account by ID
+    // ✅ Get Current Account by ID
     @GetMapping("/{id}")
     public ResponseEntity<CurrentAccountDTO> getCurrentAccountById(@PathVariable Long id) {
         Optional<CurrentAccountDTO> account = currentAccountService.getCurrentAccountById(id);
         return account.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Create a new Current Account
+    // ✅ Create a new Current Account
     @PostMapping
-    public ResponseEntity<CurrentAccountDTO> createCurrentAccount(@RequestBody CurrentAccountDTO accountDTO) {
-        return ResponseEntity.ok(currentAccountService.createCurrentAccount(accountDTO));
+    public ResponseEntity<?> createCurrentAccount(@RequestBody CurrentAccountDTO accountDTO) {
+        try {
+            return ResponseEntity.ok(currentAccountService.createCurrentAccount(accountDTO));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    // Delete Current Account
+    // ✅ Delete Current Account
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCurrentAccount(@PathVariable Long id) {
         currentAccountService.deleteCurrentAccount(id);

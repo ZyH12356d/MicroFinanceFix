@@ -14,9 +14,11 @@ public class CurrentAccountDTO {
     @StatusConverter
     private Integer status;
 
-
     private Date dateCreated;
     private BigDecimal holdAmount;
     private Long cifId;
+
+    private BigDecimal maximumBalance;
+    private BigDecimal minimumBalance;
 }
 

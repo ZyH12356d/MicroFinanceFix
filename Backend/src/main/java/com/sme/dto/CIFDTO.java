@@ -32,7 +32,7 @@ public class CIFDTO {
     private MultipartFile frontNrc;
     private MultipartFile backNrc;
 
-    // Fields for returning URLs (Stored in DB)
+
     private String fNrcPhotoUrl;
     private String bNrcPhotoUrl;
 }
