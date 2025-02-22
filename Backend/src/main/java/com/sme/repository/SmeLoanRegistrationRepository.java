@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface SmeLoanRegistrationRepository extends JpaRepository<SmeLoanRegistration, Long> {
     List<SmeLoanRegistration> findByStatus(Integer status);
+
 }

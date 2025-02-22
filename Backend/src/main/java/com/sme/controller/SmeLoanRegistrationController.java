@@ -1,6 +1,7 @@
 package com.sme.controller;
 
 import com.sme.dto.SmeLoanRegistrationDTO;
+import com.sme.entity.SmeLoanRegistration;
 import com.sme.service.SmeLoanRegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +24,15 @@ public class SmeLoanRegistrationController {
     @GetMapping("/{id}")
     public ResponseEntity<SmeLoanRegistrationDTO> getLoanById(@PathVariable Long id) {
         return ResponseEntity.ok(loanService.getLoanById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateLoan(@PathVariable Long id, @RequestBody SmeLoanRegistration smeLoan) {
+        try {
+            SmeLoanRegistration updatedLoan = loanService.updateLoan(id, smeLoan);
+            return ResponseEntity.ok(updatedLoan);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

@@ -67,7 +67,7 @@ public class CIFController {
         cifDTO.setFrontNrc(frontNrc);
         cifDTO.setBackNrc(backNrc);
 
-        return ResponseEntity.ok(cifService.createCIF(cifDTO));
+        return ResponseEntity.ok(cifService.createCIF(cifDTO, frontNrc, backNrc));
     }
 
     // Delete CIF
