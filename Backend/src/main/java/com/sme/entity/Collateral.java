@@ -16,9 +16,6 @@ public class Collateral {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "collateral_type", nullable = false, length = 70)
-    private String collateralType;
-
     @Column(name = "value", nullable = false, precision = 15, scale = 2)
     private BigDecimal value;
 
@@ -40,6 +37,10 @@ public class Collateral {
     @ManyToOne
     @JoinColumn(name = "cif_id", nullable = false)
     private CIF cif;
+
+    @ManyToOne
+    @JoinColumn(name = "collateral_type_id", nullable = false)
+    private CollateralType collateralType;
 
     @OneToMany(mappedBy = "collateral", cascade = CascadeType.ALL)
     private List<SmeLoanCollateral> smeLoanCollaterals;

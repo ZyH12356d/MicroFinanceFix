@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 public class BranchDTO {
     private Long id;
-    private String name;
+    private String branchName;
     private String branchCode;
     private String phoneNumber;
     private String email;

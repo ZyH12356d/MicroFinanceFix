@@ -31,7 +31,6 @@ public class User {
     @Column(name = "dob",nullable = false)
     private LocalDateTime dob;
 
-
     @Column(name = "created_at", nullable = false,updatable = false)
     private LocalDateTime createdAt;
 

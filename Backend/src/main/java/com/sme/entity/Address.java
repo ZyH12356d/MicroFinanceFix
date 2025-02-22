@@ -15,13 +15,16 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 45)
-    private String city;
+    @Column(length = 45, nullable = false)
+    private String region;
 
-    @Column(length = 45)
-    private String town;
+    @Column(length = 45, nullable = false)
+    private String district;
 
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
+    private String township;
+
+    @Column(length = 45, nullable = false)
     private String street;
 
     @OneToOne(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)

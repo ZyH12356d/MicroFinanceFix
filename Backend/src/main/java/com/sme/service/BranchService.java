@@ -29,36 +29,41 @@ public class BranchService {
     private ModelMapper modelMapper;
 
     private String generateBranchCode() {
-        // Find the latest branch_code
         String lastBranchCode = branchRepository.findLastBranchCode();
 
-        if (lastBranchCode == null) {
+        if (lastBranchCode == null || lastBranchCode.isEmpty()) {
             return "B0001"; // First branch
         }
 
-        // Extract number part (e.g., "B0001" → 1)
-        int lastNumber = Integer.parseInt(lastBranchCode.substring(1));
-        int newNumber = lastNumber + 1;
+        System.out.println("Last Branch Code: " + lastBranchCode);
 
-        // Generate new branch_code (e.g., "B0002")
-        return "B" + String.format("%04d", newNumber);
+        try {
+            int lastNumber = Integer.parseInt(lastBranchCode.substring(1));
+            int newNumber = lastNumber + 1;
+            return "B" + String.format("%04d", newNumber);
+        } catch (NumberFormatException e) {
+            System.err.println("Error parsing branch code: " + lastBranchCode);
+            return "B0001";
+        }
     }
 
-    // ✅ Save new branch with auto-generated `branch_code`
+
     @Transactional
-    public BranchDTO createBranch(BranchDTO branchDTO) {
+    public BranchDTO createBranch(BranchDTO branchDTO, AddressDTO addressDTO) {
+        Address address = modelMapper.map(addressDTO, Address.class);
+        addressRepository.save(address);
+
         Branch branch = modelMapper.map(branchDTO, Branch.class);
+        branch.setAddress(address);
+
         branch.setCreatedDate(new Date());
         branch.setUpdatedDate(new Date());
-
-        // Generate unique branch_code
         branch.setBranchCode(generateBranchCode());
 
-        // Save branch
         Branch savedBranch = branchRepository.save(branch);
+
         return modelMapper.map(savedBranch, BranchDTO.class);
     }
-
 
 
     // Convert Branch entity to DTO
@@ -75,11 +80,13 @@ public class BranchService {
 
             Address address = new Address();
             address.setId(addressDTO.getId()); // Ensure the ID is set (if updating existing address)
-            address.setCity(addressDTO.getCity());
-            address.setTown(addressDTO.getTown());
+             address.setDistrict(addressDTO.getDistrict());
+             address.setRegion(addressDTO.getRegion());
             address.setStreet(addressDTO.getStreet());
 
             branch.setAddress(address);
+        } else {
+            System.out.println("something went wrong");
         }
 
         return branch;
@@ -105,7 +112,7 @@ public class BranchService {
 
         if (optionalBranch.isPresent()) {
             Branch branch = optionalBranch.get();
-            branch.setName(branchDTO.getName());
+            branch.setName(branchDTO.getBranchName());
             branch.setBranchCode(branchDTO.getBranchCode());
             branch.setPhoneNumber(branchDTO.getPhoneNumber());
             branch.setEmail(branchDTO.getEmail());
@@ -118,8 +125,7 @@ public class BranchService {
                 AddressDTO addressDTO = branchDTO.getAddress();
                 Address address = new Address();
                 address.setId(addressDTO.getId());
-                address.setCity(addressDTO.getCity());
-                address.setTown(addressDTO.getTown());
+                address.setDistrict(addressDTO.getDistrict());
                 address.setStreet(addressDTO.getStreet());
 
                 branch.setAddress(address);
