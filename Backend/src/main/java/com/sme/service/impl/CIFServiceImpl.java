@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class CIFServiceImpl implements CIFService {
     private final BranchRepository branchRepository;
     private final ModelMapper modelMapper;
 
-    private Cloudinary cloudinary;
+    private final Cloudinary cloudinary;
 
     @Override
     public List<CIFDTO> getAllCIFs() {
@@ -46,23 +47,37 @@ public class CIFServiceImpl implements CIFService {
 
     @Override
     @Transactional
-    public CIFDTO createCIF(CIFDTO cifDTO) throws IOException {
+    public CIFDTO createCIF(CIFDTO cifDTO, MultipartFile frontNrc, MultipartFile backNrc) throws IOException {
         CIF cif = modelMapper.map(cifDTO, CIF.class);
         cif.setCreatedAt(LocalDateTime.now());
 
+        // ✅ Upload NRC Images to Cloudinary
+        if (frontNrc != null && !frontNrc.isEmpty()) {
+            String frontNrcUrl = uploadImage(frontNrc);
+            cif.setF_nrcPhoto(frontNrcUrl);
+        }
 
+        if (backNrc != null && !backNrc.isEmpty()) {
+            String backNrcUrl = uploadImage(backNrc);
+            cif.setB_nrcPhoto(backNrcUrl);
+        }
+
+        // ✅ Find Branch
         Branch branch = branchRepository.findById(cifDTO.getBranchId())
                 .orElseThrow(() -> new RuntimeException("Branch not found with ID: " + cifDTO.getBranchId()));
         cif.setBranch(branch);
 
-
-        cif.setF_nrcPhoto(cifDTO.getFNrcPhotoUrl());
-        cif.setB_nrcPhoto(cifDTO.getBNrcPhotoUrl());
-
-
+        // ✅ Save to Database
         CIF savedCIF = cifRepository.save(cif);
         return modelMapper.map(savedCIF, CIFDTO.class);
     }
+
+    // ✅ Upload Image to Cloudinary
+    private String uploadImage(MultipartFile file) throws IOException {
+        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+        return uploadResult.get("secure_url").toString();
+    }
+
 
 
     @Override
@@ -87,8 +102,4 @@ public class CIFServiceImpl implements CIFService {
         cifRepository.deleteById(id);
     }
 
-    private String uploadImage(MultipartFile file) throws IOException {
-        return cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap())
-                .get("secure_url").toString();
-    }
 }

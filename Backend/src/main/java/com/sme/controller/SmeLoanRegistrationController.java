@@ -24,4 +24,6 @@ public class SmeLoanRegistrationController {
     public ResponseEntity<SmeLoanRegistrationDTO> getLoanById(@PathVariable Long id) {
         return ResponseEntity.ok(loanService.getLoanById(id));
     }
+
+
 }

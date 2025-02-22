@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.print.attribute.standard.Media;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -36,11 +35,37 @@ public class CIFController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CIFDTO> createCIF(
-            @RequestBody CIFDTO cifdto
+            @RequestParam("name") String name,
+            @RequestParam("nrcNumber") String nrcNumber,
+            @RequestParam("dob") String dob,
+            @RequestParam("gender") String gender,
+            @RequestParam("phoneNumber") String phoneNumber,
+            @RequestParam("email") String email,
+            @RequestParam("address") String address,
+            @RequestParam("maritalStatus") String maritalStatus,
+            @RequestParam("occupation") String occupation,
+            @RequestParam("incomeSource") String incomeSource,
+            @RequestParam("branchId") Long branchId,
+            @RequestParam(value = "frontNrc", required = false) MultipartFile frontNrc,
+            @RequestParam(value = "backNrc", required = false) MultipartFile backNrc
     ) throws IOException {
-         return ResponseEntity.ok(cifService.createCIF(cifdto));
+        CIFDTO cifDTO = CIFDTO.builder()
+                .name(name)
+                .nrcNumber(nrcNumber)
+                .dob(LocalDate.parse(dob))
+                .gender(gender)
+                .phoneNumber(phoneNumber)
+                .email(email)
+                .address(address)
+                .maritalStatus(maritalStatus)
+                .occupation(occupation)
+                .incomeSource(incomeSource)
+                .branchId(branchId)
+                .build();
+
+        return ResponseEntity.ok(cifService.createCIF(cifDTO, frontNrc, backNrc));
     }
 
 
