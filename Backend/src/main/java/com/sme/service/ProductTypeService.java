@@ -11,62 +11,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-public class ProductTypeService {
 
-    @Autowired
-    private ProductTypeRepository productTypeRepository;
+public interface ProductTypeService {
 
-    @Autowired
-    private ModelMapper modelMapper;
 
-    // ✅ Create Product Type
-    @Transactional
-    public ProductTypeDTO createProductType(ProductTypeDTO productTypeDTO) {
-        ProductType productType = modelMapper.map(productTypeDTO, ProductType.class);
- 
-        productType.setStatus(4); // Default to active
- 
-        ProductType savedProductType = productTypeRepository.save(productType);
-        return modelMapper.map(savedProductType, ProductTypeDTO.class);
-    }
+    ProductTypeDTO createProductType(ProductTypeDTO productTypeDTO);
 
-    // ✅ Get All Active Product Types
-    public List<ProductTypeDTO> getAllActiveProductTypes() {
-        List<ProductType> productTypes = productTypeRepository.findByStatus(Status.ACTIVE);
- 
-        return productTypes.stream()
-                .map(productType -> modelMapper.map(productType, ProductTypeDTO.class))
-                .collect(Collectors.toList());
-    }
+    List<ProductTypeDTO> getAllActiveProductTypes();
 
-    // ✅ Get Product Type by ID
-    public ProductTypeDTO getProductTypeById(Long id) {
-        ProductType productType = productTypeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product Type not found with ID: " + id));
-        return modelMapper.map(productType, ProductTypeDTO.class);
-    }
+    ProductTypeDTO getProductTypeById(Long id);
 
-    // ✅ Update Product Type
-    @Transactional
-    public ProductTypeDTO updateProductType(Long id, ProductTypeDTO productTypeDTO) {
-        ProductType existingProductType = productTypeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product Type not found with ID: " + id));
+    ProductTypeDTO updateProductType(Long id, ProductTypeDTO productTypeDTO);
 
-        existingProductType.setName(productTypeDTO.getName());
-        existingProductType.setStatus(productTypeDTO.getStatus());
-
-        ProductType updatedProductType = productTypeRepository.save(existingProductType);
-        return modelMapper.map(updatedProductType, ProductTypeDTO.class);
-    }
-
-    // ✅ Delete Product Type (Soft Delete)
-    @Transactional
-    public void deleteProductType(Long id) {
-        ProductType productType = productTypeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product Type not found with ID: " + id));
- 
-        productType.setStatus(2);
-        productTypeRepository.save(productType);
-    }
+    void deleteProductType(Long id);
 }
