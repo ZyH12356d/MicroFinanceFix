@@ -16,51 +16,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-public class HpProductService {
 
-    @Autowired
-    private HpProductRepository hpProductRepository;
+public interface HpProductService {
 
-    @Autowired
-    private DealerRegistrationRepository dealerRegistrationRepository;
+    HpProductDTO createHpProduct(HpProductDTO productDTO);
 
-    @Autowired
-    private ProductTypeRepository productTypeRepository;
+    List<HpProductDTO> getAllProducts();
 
-    @Autowired
-    private ModelMapper modelMapper;
-
-    // ✅ Create HP Product (Ensure commissionFee is set)
-    @Transactional
-    public HpProductDTO createHpProduct(HpProductDTO productDTO) {
-        HpProduct product = modelMapper.map(productDTO, HpProduct.class);
-
-        // ✅ Ensure ProductType exists
-        ProductType productType = productTypeRepository.findById(productDTO.getProductTypeId())
-                .orElseThrow(() -> new RuntimeException("Product Type not found with ID: " + productDTO.getProductTypeId()));
-
-        // ✅ Ensure Dealer exists
-        DealerRegistration dealer = dealerRegistrationRepository.findById(productDTO.getDealerRegistrationId())
-                .orElseThrow(() -> new RuntimeException("Dealer not found with ID: " + productDTO.getDealerRegistrationId()));
-
-        product.setProductType(productType);
-        product.setDealerRegistration(dealer);
-
-        // ✅ Ensure `commissionFee` is not null (default to 0 if missing)
-        if (product.getCommissionFee() == null) {
-            product.setCommissionFee(BigDecimal.ZERO);
-        }
-
-        HpProduct savedProduct = hpProductRepository.save(product);
-        return modelMapper.map(savedProduct, HpProductDTO.class);
-    }
-
-    // ✅ Get All HP Products
-    public List<HpProductDTO> getAllProducts() {
-        List<HpProduct> products = hpProductRepository.findAll();
-        return products.stream()
-                .map(product -> modelMapper.map(product, HpProductDTO.class))
-                .collect(Collectors.toList());
-    }
 }

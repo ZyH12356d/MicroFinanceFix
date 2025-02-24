@@ -62,31 +62,30 @@ public class CurrentAccountServiceImpl implements CurrentAccountService {
     // ✅ Create a new Current Account with Min & Max Validation
     @Override
     public CurrentAccountDTO createCurrentAccount(CurrentAccountDTO accountDTO) {
-        if (accountDTO.getBalance().compareTo(accountDTO.getMinimumBalance()) < 0) {
-            throw new IllegalArgumentException("Balance cannot be less than the minimum balance.");
+        if (accountDTO.getCifId() == null) {
+            throw new IllegalArgumentException("CIF ID must not be null.");
         }
 
-        if (accountDTO.getBalance().compareTo(accountDTO.getMaximumBalance()) > 0) {
-            throw new IllegalArgumentException("Balance cannot be greater than the maximum balance.");
-        }
+        CIF cif = cifRepository.findById(accountDTO.getCifId())
+                .orElseThrow(() -> new RuntimeException("CIF not found with ID: " + accountDTO.getCifId()));
 
         CurrentAccount account = new CurrentAccount();
+        account.setCif(cif);
         account.setBalance(accountDTO.getBalance());
         account.setMinimumBalance(accountDTO.getMinimumBalance());
         account.setMaximumBalance(accountDTO.getMaximumBalance());
         account.setStatus(accountDTO.getStatus());
         account.setDateCreated(new Date());
-        account.setHoldAmount(BigDecimal.ZERO); // Default hold amount
-
-        // Fetch and set CIF reference
-        CIF cif = cifRepository.findById(accountDTO.getCifId())
-                .orElseThrow(() -> new RuntimeException("CIF not found with ID: " + accountDTO.getCifId()));
-        account.setCif(cif);
+        account.setHoldAmount(BigDecimal.ZERO);
 
         CurrentAccount savedAccount = currentAccountRepository.save(account);
         return convertToDTO(savedAccount);
     }
 
+
+    public boolean hasCurrentAccount(Long cifId) {
+        return currentAccountRepository.existsByCifId(cifId);
+    }
     // ✅ Delete a Current Account
     @Override
     public void deleteCurrentAccount(Long id) {

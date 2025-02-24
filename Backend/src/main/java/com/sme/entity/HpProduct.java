@@ -22,7 +22,6 @@ public class HpProduct {
     private Integer status;
 
 
-
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 

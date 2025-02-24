@@ -28,6 +28,8 @@ public class CIFDTO {
     private LocalDateTime createdAt;
     private Long branchId;  // Reference Branch ID
 
+    private boolean hasCurrentAccount;
+
     // Fields for image upload (Not stored in DB)
     private MultipartFile frontNrc;
     private MultipartFile backNrc;
