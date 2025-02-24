@@ -13,8 +13,6 @@ public class SmeLoanRegistrationDTO {
     private BigDecimal loanAmount;
     private BigDecimal interestRate;
     private Integer gracePeriod;
-    private LocalDate graceStartDate;
-    private LocalDate graceEndDate;
     private Long repaymentDuration;
     private BigDecimal documentFee;
     private BigDecimal serviceCharges;

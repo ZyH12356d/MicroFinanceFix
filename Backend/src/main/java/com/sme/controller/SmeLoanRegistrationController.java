@@ -16,9 +16,14 @@ public class SmeLoanRegistrationController {
 
     private final SmeLoanRegistrationService loanService;
 
-    @PostMapping
-    public ResponseEntity<SmeLoanRegistrationDTO> createLoan(@RequestBody SmeLoanRegistrationDTO dto) {
-        return ResponseEntity.ok(loanService.createLoan(dto));
+    @PostMapping("/register")
+    public ResponseEntity<?> registerLoan(@RequestBody SmeLoanRegistration smeLoan) {
+        try {
+            SmeLoanRegistration savedLoan = loanService.registerLoan(smeLoan);
+            return ResponseEntity.ok(savedLoan);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
@@ -26,13 +31,5 @@ public class SmeLoanRegistrationController {
         return ResponseEntity.ok(loanService.getLoanById(id));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateLoan(@PathVariable Long id, @RequestBody SmeLoanRegistration smeLoan) {
-        try {
-            SmeLoanRegistration updatedLoan = loanService.updateLoan(id, smeLoan);
-            return ResponseEntity.ok(updatedLoan);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+
 }

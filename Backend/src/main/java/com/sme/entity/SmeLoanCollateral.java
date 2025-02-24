@@ -22,6 +22,8 @@ public class SmeLoanCollateral implements Serializable {
     @JoinColumn(name = "collateral_id", nullable = false)
     private Collateral collateral;
 
+
     @Column(name = "collateral_amount", nullable = false, precision = 15, scale = 2)
     private BigDecimal collateralAmount;
+
 }

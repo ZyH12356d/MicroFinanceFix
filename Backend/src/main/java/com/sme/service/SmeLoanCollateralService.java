@@ -14,48 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-@RequiredArgsConstructor
-public class SmeLoanCollateralService {
 
-    private final SmeLoanCollateralRepository loanCollateralRepository;
-    private final SmeLoanRegistrationRepository loanRepository;
-    private final CollateralRepository collateralRepository;
+public interface SmeLoanCollateralService {
 
-    @Transactional
-    public SmeLoanCollateralDTO linkCollateralToLoan(SmeLoanCollateralDTO dto) {
-        SmeLoanRegistration loan = loanRepository.findById(dto.getLoanId())
-                .orElseThrow(() -> new RuntimeException("Loan not found with ID: " + dto.getLoanId()));
+    SmeLoanCollateralDTO linkCollateralToLoan(SmeLoanCollateralDTO dto);
 
-        Collateral collateral = collateralRepository.findById(dto.getCollateralId())
-                .orElseThrow(() -> new RuntimeException("Collateral not found with ID: " + dto.getCollateralId()));
+    List<SmeLoanCollateralDTO> getCollateralsForLoan(Long loanId);
 
-        SmeLoanCollateral loanCollateral = new SmeLoanCollateral();
-        loanCollateral.setSmeLoan(loan);
-        loanCollateral.setCollateral(collateral);
-
-        loanCollateral = loanCollateralRepository.save(loanCollateral);
-        dto.setId(loanCollateral.getId());
-        return dto;
-    }
-
-    public List<SmeLoanCollateralDTO> getCollateralsForLoan(Long loanId) {
-        return loanCollateralRepository.findBySmeLoanId(loanId)
-                .stream()
-                .map(loanCollateral -> new SmeLoanCollateralDTO(
-                        loanCollateral.getId(),
-                        loanCollateral.getSmeLoan().getId(),
-                        loanCollateral.getCollateral().getId()))
-                .collect(Collectors.toList());
-    }
-
-    public List<SmeLoanCollateralDTO> getLoansForCollateral(Long collateralId) {
-        return loanCollateralRepository.findByCollateralId(collateralId)
-                .stream()
-                .map(loanCollateral -> new SmeLoanCollateralDTO(
-                        loanCollateral.getId(),
-                        loanCollateral.getSmeLoan().getId(),
-                        loanCollateral.getCollateral().getId()))
-                .collect(Collectors.toList());
-    }
+    List<SmeLoanCollateralDTO> getLoansForCollateral(Long collateralId);
 }

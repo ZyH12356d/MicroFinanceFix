@@ -27,9 +27,12 @@ public class CloudinaryService {
         ));
     }
 
-    // Upload image to Cloudinary and return the image URL
-    public String uploadImage(MultipartFile file) throws IOException {
-        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-        return uploadResult.get("secure_url").toString(); // Returns the uploaded image URL
+    public String uploadImage(MultipartFile file) {
+        try {
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            return uploadResult.get("url").toString();  // ✅ Return the uploaded image URL
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image to Cloudinary", e);
+        }
     }
 }

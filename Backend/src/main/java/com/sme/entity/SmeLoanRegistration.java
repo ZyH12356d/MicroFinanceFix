@@ -6,6 +6,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -53,5 +54,8 @@ public class SmeLoanRegistration {
     private List<RepaymentSchedule> repaymentSchedules;
 
     @OneToMany(mappedBy = "smeLoan", cascade = CascadeType.ALL)
-    private List<SmeLoanCollateral> smeLoanCollaterals;  
+    private List<SmeLoanCollateral> smeLoanCollaterals; // Always initialized
 }
+
+
+
