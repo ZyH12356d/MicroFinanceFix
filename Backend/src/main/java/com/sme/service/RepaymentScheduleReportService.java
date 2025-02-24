@@ -50,7 +50,7 @@ public class RepaymentScheduleReportService {
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
         exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
 
-        
+
         SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
         configuration.setOnePagePerSheet(false);
         configuration.setDetectCellType(true);

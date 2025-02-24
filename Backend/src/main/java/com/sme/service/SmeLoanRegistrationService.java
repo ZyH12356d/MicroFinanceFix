@@ -16,8 +16,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
 public interface SmeLoanRegistrationService {
+
+
 
     List<SmeLoanRegistrationDTO> getAllLoans();
 
@@ -26,4 +29,6 @@ public interface SmeLoanRegistrationService {
     SmeLoanRegistrationDTO createLoan(SmeLoanRegistrationDTO dto);
 
     SmeLoanRegistration registerLoan(SmeLoanRegistration loan);
+
+
 }
