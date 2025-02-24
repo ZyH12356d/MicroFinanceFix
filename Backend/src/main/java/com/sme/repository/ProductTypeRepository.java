@@ -1,7 +1,10 @@
 package com.sme.repository;
 
 import com.sme.entity.ProductType;
+
 import com.sme.entity.Status;
+ 
+ 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

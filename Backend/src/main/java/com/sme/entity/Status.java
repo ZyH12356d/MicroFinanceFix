@@ -3,7 +3,6 @@ package com.sme.entity;
 import lombok.Getter;
 
 @Getter
-
 public enum Status {
 
     ACTIVE(1), INACTIVE(2),
