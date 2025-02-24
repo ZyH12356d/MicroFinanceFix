@@ -3,6 +3,7 @@ package com.sme.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Data
@@ -20,4 +21,9 @@ public class SmeLoanCollateral implements Serializable {
     @ManyToOne
     @JoinColumn(name = "collateral_id", nullable = false)
     private Collateral collateral;
+
+
+    @Column(name = "collateral_amount", nullable = false, precision = 15, scale = 2)
+    private BigDecimal collateralAmount;
+
 }
