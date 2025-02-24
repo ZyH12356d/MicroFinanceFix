@@ -38,7 +38,7 @@ public class CurrentAccount {
     @Column(name = "date_created", nullable = false)
     private Date dateCreated;
 
-    @Column(name = "hold_amount", precision = 18, scale = 2)
+    @Column(name = "hold_amount", precision = 18, scale = 2, nullable = true)
     private BigDecimal holdAmount;
 
     @OneToOne

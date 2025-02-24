@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/current-accounts")
+@CrossOrigin(origins = "http://localhost:4200")
 public class CurrentAccountController {
 
     @Autowired
@@ -37,6 +38,11 @@ public class CurrentAccountController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("/exists/{cifId}")
+    public boolean hasCurrentAccount(@PathVariable Long cifId) {
+        return currentAccountService.hasCurrentAccount(cifId);
     }
 
     // ✅ Delete Current Account

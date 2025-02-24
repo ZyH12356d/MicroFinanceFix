@@ -31,6 +31,9 @@ public class CIFServiceImpl implements CIFService {
     private final BranchRepository branchRepository;
     private final ModelMapper modelMapper;
 
+    @Autowired
+    private CurrentAccountServiceImpl currentAccountService;
+
     private final Cloudinary cloudinary;
 
     @Override
@@ -42,7 +45,12 @@ public class CIFServiceImpl implements CIFService {
 
     @Override
     public Optional<CIFDTO> getCIFById(Long id) {
-        return cifRepository.findById(id).map(cif -> modelMapper.map(cif, CIFDTO.class));
+        return cifRepository.findById(id).map(cif -> {
+            boolean hasCurrentAccount = currentAccountService.hasCurrentAccount(cif.getId());
+            CIFDTO cifDTO = modelMapper.map(cif, CIFDTO.class);
+            cifDTO.setHasCurrentAccount(hasCurrentAccount);
+            return cifDTO;
+        });
     }
 
     @Override

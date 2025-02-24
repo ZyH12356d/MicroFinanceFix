@@ -8,45 +8,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class AddressService {
 
-    @Autowired
-    private AddressRepository addressRepository;
+public interface AddressService {
 
-    // Get all addresses
-    public List<Address> getAllAddresses() {
-        return addressRepository.findAll();
-    }
+    List<Address> getAllAddresses();
+    Optional<Address> getAddressById(Long id);
+    Address createAddress(Address address);
+    Address updateAddress(Long id, Address addressDetails);
+    void deleteAddress(Long id);
 
-    // Get an address by ID
-    public Optional<Address> getAddressById(long id) {
-        return addressRepository.findById(id);
-    }
-
-    // Create a new address
-    public Address createAddress(Address address) {
-        return addressRepository.save(address);
-    }
-
-    // Update an existing address
-    public Address updateAddress(long id, Address addressDetails) {
-        Optional<Address> optionalAddress = addressRepository.findById(id);
-
-        if (optionalAddress.isPresent()) {
-            Address address = optionalAddress.get();
-            address.setRegion(addressDetails.getRegion());
-             address.setDistrict(addressDetails.getDistrict());
-             address.setTownship(addressDetails.getTownship());
-            address.setStreet(addressDetails.getStreet());
-            return addressRepository.save(address);
-        } else {
-            throw new RuntimeException("Address not found with id: " + id);
-        }
-    }
-
-    // Delete an address by ID
-    public void deleteAddress(long id) {
-        addressRepository.deleteById(id);
-    }
 }

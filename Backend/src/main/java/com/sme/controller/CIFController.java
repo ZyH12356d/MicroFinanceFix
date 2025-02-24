@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/cifs")
@@ -29,10 +30,8 @@ public class CIFController {
 
     // ✅ Get CIF by ID
     @GetMapping("/{id}")
-    public ResponseEntity<CIFDTO> getCIFById(@PathVariable Long id) {
-        return cifService.getCIFById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public Optional<CIFDTO> getCIFById(@PathVariable Long id) {
+        return cifService.getCIFById(id);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
