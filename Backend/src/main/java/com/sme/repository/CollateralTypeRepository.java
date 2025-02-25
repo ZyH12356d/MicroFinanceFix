@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CollateralTypeRepository extends JpaRepository<CollateralType, Long> {
-    List<CollateralType> findByCollateralId(Long collateralId);
+
 }

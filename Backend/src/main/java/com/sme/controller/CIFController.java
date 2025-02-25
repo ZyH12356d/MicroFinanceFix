@@ -3,6 +3,7 @@ package com.sme.controller;
 import com.sme.dto.CIFDTO;
 import com.sme.service.CIFService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +29,17 @@ public class CIFController {
         return ResponseEntity.ok(cifList);
     }
 
-    // ✅ Get CIF by ID
-    @GetMapping("/{id}")
-    public Optional<CIFDTO> getCIFById(@PathVariable Long id) {
-        return cifService.getCIFById(id);
+    @GetMapping("/cif/{id}")
+    public ResponseEntity<?> getCIFById(@PathVariable Long id) {
+        Optional<CIFDTO> cifDTO = cifService.getCIFById(id);
+
+        if (cifDTO.isPresent()) {
+            return ResponseEntity.ok(cifDTO.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("CIF not found");
+        }
     }
+
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CIFDTO> createCIF(
