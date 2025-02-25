@@ -28,9 +28,5 @@ public class HpProductController {
     public ResponseEntity<List<HpProductDTO>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
     }
-    // ✅ Create Product
-    @PostMapping
-    public ResponseEntity<HpProductDTO> createProduct(@RequestBody HpProductDTO productDTO) {
-        return ResponseEntity.ok(productService.createHpProduct(productDTO));
-    }
+
 }

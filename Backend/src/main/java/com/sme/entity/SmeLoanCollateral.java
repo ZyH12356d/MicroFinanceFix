@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Entity
 @Data
 @Table(name = "sme_loan_collateral")
-public class SmeLoanCollateral implements Serializable {
+public class SmeLoanCollateral {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,6 @@ public class SmeLoanCollateral implements Serializable {
     @ManyToOne
     @JoinColumn(name = "collateral_id", nullable = false)
     private Collateral collateral;
-
 
     @Column(name = "collateral_amount", nullable = false, precision = 15, scale = 2)
     private BigDecimal collateralAmount;
