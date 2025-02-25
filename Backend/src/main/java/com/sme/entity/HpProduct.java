@@ -28,9 +28,7 @@ public class HpProduct {
     @ManyToOne
     @JoinColumn(name = "product_type_id", nullable = false)
     private ProductType productType;
- 
-    @Column(name = "dealer_registration_id", nullable = false)
-    private int dealerRegistrationId;
+
  
     @ManyToOne
     @JoinColumn(name = "dealer_registration_id", nullable = false)
