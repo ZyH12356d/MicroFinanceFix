@@ -4,6 +4,7 @@ import com.sme.dto.SmeLoanRegistrationDTO;
 import com.sme.entity.Collateral;
 import com.sme.entity.SmeLoanCollateral;
 import com.sme.entity.SmeLoanRegistration;
+import com.sme.repository.CollateralRepository;
 import com.sme.repository.SmeLoanCollateralRepository;
 import com.sme.repository.SmeLoanRegistrationRepository;
 import com.sme.service.SmeLoanRegistrationService;
@@ -24,6 +25,9 @@ public class SmeLoanRegistrationServiceImpl implements SmeLoanRegistrationServic
 
     @Autowired
     private SmeLoanCollateralRepository smeLoanCollateralRepository;
+
+    @Autowired
+    private CollateralRepository collateralRepository;
 
     private final SmeLoanRegistrationRepository loanRepository;
     private final ModelMapper modelMapper;
@@ -55,11 +59,30 @@ public class SmeLoanRegistrationServiceImpl implements SmeLoanRegistrationServic
         BigDecimal totalCollateralAmount = BigDecimal.ZERO;
 
         for (SmeLoanCollateral smeLoanCollateral : loan.getSmeLoanCollaterals()) {
-            Collateral collateral = smeLoanCollateral.getCollateral();
-            BigDecimal collateralValue = collateral.getValue();
+            Collateral inputCollateral = smeLoanCollateral.getCollateral();
+
+            if (inputCollateral == null || inputCollateral.getId() == null) {
+                throw new IllegalArgumentException("Collateral ID is missing or null");
+            }
+
+            // Fetch the full Collateral entity from DB without reassigning `collateral`
+            Collateral fetchedCollateral = collateralRepository.findById(inputCollateral.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Collateral with ID " + inputCollateral.getId() + " not found"));
+
+            // Assign the fetched collateral back
+            smeLoanCollateral.setCollateral(fetchedCollateral);
+
+            BigDecimal collateralValue = fetchedCollateral.getValue();
             BigDecimal collateralAmount = smeLoanCollateral.getCollateralAmount();
 
-            // Check if collateral amount exceeds collateral value
+            if (collateralValue == null) {
+                throw new IllegalArgumentException("Collateral value cannot be null for ID: " + fetchedCollateral.getId());
+            }
+
+            if (collateralAmount == null) {
+                throw new IllegalArgumentException("Collateral amount cannot be null");
+            }
+
             if (collateralAmount.compareTo(collateralValue) > 0) {
                 throw new IllegalArgumentException("Collateral amount " + collateralAmount +
                         " exceeds collateral value " + collateralValue);
@@ -68,11 +91,17 @@ public class SmeLoanRegistrationServiceImpl implements SmeLoanRegistrationServic
             totalCollateralAmount = totalCollateralAmount.add(collateralAmount);
         }
 
-        // Validate total collateral amount against loan amount
+        if (loan.getLoanAmount() == null) {
+            throw new IllegalArgumentException("Loan amount cannot be null");
+        }
+
         if (totalCollateralAmount.compareTo(loan.getLoanAmount()) < 0) {
             throw new IllegalArgumentException("Total collateral amount must be greater than or equal to loan amount");
         }
 
         return loanRepository.save(loan);
     }
+
+
+
 }

@@ -10,6 +10,8 @@ import com.sme.service.BranchService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -146,4 +148,10 @@ public class BranchServiceImpl implements BranchService {
     }
 
 
+    @Override
+    @Transactional
+    public Page<BranchDTO> getBranches(Pageable pageable) {
+        Page<Branch> branchPage = branchRepository.findAll(pageable);
+        return branchPage.map(this::convertToDTO);
+    }
 }

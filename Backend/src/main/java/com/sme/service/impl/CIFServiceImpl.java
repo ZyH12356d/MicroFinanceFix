@@ -5,21 +5,26 @@ import com.cloudinary.utils.ObjectUtils;
 import com.sme.dto.CIFDTO;
 import com.sme.entity.Branch;
 import com.sme.entity.CIF;
+import com.sme.exception.CIFValidationException;
 import com.sme.repository.BranchRepository;
 import com.sme.repository.CIFRepository;
 import com.sme.service.CIFService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,6 +61,9 @@ public class CIFServiceImpl implements CIFService {
     @Override
     @Transactional
     public CIFDTO createCIF(CIFDTO cifDTO, MultipartFile frontNrc, MultipartFile backNrc) throws IOException {
+        // ✅ Validate DOB before proceeding
+        validateDOB(cifDTO.getDob());
+
         CIF cif = modelMapper.map(cifDTO, CIF.class);
         cif.setCreatedAt(LocalDateTime.now());
 
@@ -80,23 +88,17 @@ public class CIFServiceImpl implements CIFService {
         return modelMapper.map(savedCIF, CIFDTO.class);
     }
 
-    // ✅ Upload Image to Cloudinary
-    private String uploadImage(MultipartFile file) throws IOException {
-        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-        return uploadResult.get("secure_url").toString();
-    }
-
-
-
     @Override
     @Transactional
     public CIFDTO updateCIF(Long id, CIFDTO cifDTO) throws IOException {
+        // ✅ Validate DOB before proceeding
+        validateDOB(cifDTO.getDob());
+
         CIF cif = cifRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("CIF not found with ID: " + id));
 
         // ✅ Update details
         modelMapper.map(cifDTO, cif);
-
 
         CIF updatedCIF = cifRepository.save(cif);
         return modelMapper.map(updatedCIF, CIFDTO.class);
@@ -110,4 +112,27 @@ public class CIFServiceImpl implements CIFService {
         cifRepository.deleteById(id);
     }
 
+    // ✅ Method to validate DOB (Applicant must be at least 18 years old)
+    private void validateDOB(LocalDate dob) {
+        if (dob == null) {
+            throw new CIFValidationException("Date of Birth cannot be null");
+        }
+
+        int age = Period.between(dob, LocalDate.now()).getYears();
+        if (age < 18) {
+            throw new CIFValidationException("CIF applicant must be at least 18 years old");
+        }
+    }
+
+    // ✅ Upload Image to Cloudinary
+    private String uploadImage(MultipartFile file) throws IOException {
+        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+        return uploadResult.get("secure_url").toString();
+    }
+
+    @Override
+    public Page<CIFDTO> getAllCIFsPaged(Pageable pageable) {
+        Page<CIF> cifPage = cifRepository.findAll(pageable);
+        return cifPage.map(cif -> modelMapper.map(cif, CIFDTO.class));
+    }
 }

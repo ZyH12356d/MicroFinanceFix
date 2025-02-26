@@ -4,6 +4,7 @@ import com.sme.dto.SmeLoanRegistrationDTO;
 import com.sme.entity.SmeLoanRegistration;
 import com.sme.service.SmeLoanRegistrationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +15,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SmeLoanRegistrationController {
 
-    private final SmeLoanRegistrationService loanService;
+    @Autowired
+    private SmeLoanRegistrationService loanService;
+    //private final SmeLoanRegistrationService loanService;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerLoan(@RequestBody SmeLoanRegistration smeLoan) {
+        //System.out.println("Collateral Value: " + collateralValue);
+//        System.out.println("Collateral Amount: " + collateralAmount);
+        System.out.println("Loan Amount: " + smeLoan.getLoanAmount());
         try {
             SmeLoanRegistration savedLoan = loanService.registerLoan(smeLoan);
             return ResponseEntity.ok(savedLoan);

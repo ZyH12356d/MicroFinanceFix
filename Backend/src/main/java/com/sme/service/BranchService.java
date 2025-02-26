@@ -15,6 +15,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 
 public interface BranchService {
@@ -36,6 +39,9 @@ public interface BranchService {
    BranchDTO updateBranch(Long id, BranchDTO branchDTO);
 
    void deleteBranch(Long id);
+
+    Page<BranchDTO> getBranches(Pageable pageable);
+
 
 
 }

@@ -2,6 +2,8 @@ package com.sme.service;
 
 
 import com.sme.dto.CIFDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,4 +23,7 @@ public interface CIFService {
     CIFDTO updateCIF(Long id, CIFDTO cifDTO) throws IOException;
 
     void deleteCIF(Long id);
+
+    Page<CIFDTO> getAllCIFsPaged(Pageable pageable);
+
 }

@@ -11,6 +11,6 @@ public interface DealerRegistrationRepository extends JpaRepository<DealerRegist
   
      List<DealerRegistration> findByStatus(Integer status);
  
-     List<DealerRegistration> findByStatus(Integer status);
+
  
 }
