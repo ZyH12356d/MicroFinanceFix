@@ -3,6 +3,7 @@ package com.sme.controller;
 import com.sme.dto.CIFDTO;
 import com.sme.service.CIFService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CIFController {
 
-    private final CIFService cifService;
+    @Autowired
+    private CIFService cifService;
 
-    // ✅ Get All CIFs
     @GetMapping
     public ResponseEntity<List<CIFDTO>> getAllCIFs() {
         List<CIFDTO> cifList = cifService.getAllCIFs();
@@ -74,7 +75,6 @@ public class CIFController {
         return ResponseEntity.ok(cifService.createCIF(cifDTO, frontNrc, backNrc));
     }
 
-
     @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
     public ResponseEntity<CIFDTO> updateCIF(
             @PathVariable Long id,
@@ -107,9 +107,9 @@ public class CIFController {
                 .branchId(branchId)
                 .build();
 
-        // 🔥 Pass all required arguments
-        return ResponseEntity.ok(cifService.updateCIF(id, cifDTO));
+        return ResponseEntity.ok(cifService.updateCIF(id, cifDTO, frontNrc, backNrc));
     }
+
 
 
     // ✅ Delete CIF

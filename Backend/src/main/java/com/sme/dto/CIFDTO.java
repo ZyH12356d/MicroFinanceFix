@@ -1,5 +1,6 @@
 package com.sme.dto;
 
+import com.sme.annotation.StatusConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,12 +26,14 @@ public class CIFDTO {
     private String maritalStatus;
     private String occupation;
     private String incomeSource;
+    @StatusConverter
+    private Integer status;
     private LocalDateTime createdAt;
     private Long branchId;  // Reference Branch ID
 
     private boolean hasCurrentAccount;
 
-    // Fields for image upload (Not stored in DB)
+
     private MultipartFile frontNrc;
     private MultipartFile backNrc;
 
