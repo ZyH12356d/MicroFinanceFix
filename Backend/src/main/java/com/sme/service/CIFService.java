@@ -15,7 +15,7 @@ public interface CIFService {
 
     CIFDTO createCIF(CIFDTO cifDTO, MultipartFile frontNrc, MultipartFile backNrc) throws IOException;
 
-    CIFDTO updateCIF(Long id, CIFDTO cifDTO) throws IOException;
+    CIFDTO updateCIF(Long id, CIFDTO cifDTO,MultipartFile frontNrc, MultipartFile backNrc) throws IOException;
 
     void deleteCIF(Long id);
 }

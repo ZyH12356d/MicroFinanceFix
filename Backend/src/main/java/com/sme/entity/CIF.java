@@ -1,5 +1,6 @@
 package com.sme.entity;
 
+import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -49,6 +50,10 @@ public class CIF {
 
     @Column(name = "income_source", nullable = false, length = 45)
     private String incomeSource;
+
+    @StatusConverter
+    @Column(nullable = false, length = 45)
+    private Integer status;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

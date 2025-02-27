@@ -74,40 +74,75 @@ public class CIFServiceImpl implements CIFService {
         Branch branch = branchRepository.findById(cifDTO.getBranchId())
                 .orElseThrow(() -> new RuntimeException("Branch not found with ID: " + cifDTO.getBranchId()));
         cif.setBranch(branch);
+        cif.setStatus(1);
 
         // ✅ Save to Database
         CIF savedCIF = cifRepository.save(cif);
         return modelMapper.map(savedCIF, CIFDTO.class);
     }
 
-    // ✅ Upload Image to Cloudinary
+
     private String uploadImage(MultipartFile file) throws IOException {
         Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
         return uploadResult.get("secure_url").toString();
     }
 
 
-
     @Override
     @Transactional
-    public CIFDTO updateCIF(Long id, CIFDTO cifDTO) throws IOException {
+    public CIFDTO updateCIF(Long id, CIFDTO cifDTO, MultipartFile frontNrc, MultipartFile backNrc) throws IOException {
         CIF cif = cifRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("CIF not found with ID: " + id));
 
-        // ✅ Update details
-        modelMapper.map(cifDTO, cif);
 
+        Long existingId = cif.getId();
+        modelMapper.map(cifDTO, cif);
+        cif.setId(existingId);
+        cif.setCreatedAt(LocalDateTime.now());
+        cif.setStatus(1);
+        // 🔥 Handle NRC Photo Update
+        if (frontNrc != null && !frontNrc.isEmpty()) {
+            deleteImage(cif.getF_nrcPhoto());
+            String frontNrcUrl = uploadImage(frontNrc);
+            cif.setF_nrcPhoto(frontNrcUrl);
+        }
+
+        if (backNrc != null && !backNrc.isEmpty()) {
+            deleteImage(cif.getB_nrcPhoto());
+            String backNrcUrl = uploadImage(backNrc);
+            cif.setB_nrcPhoto(backNrcUrl);
+        }
 
         CIF updatedCIF = cifRepository.save(cif);
         return modelMapper.map(updatedCIF, CIFDTO.class);
     }
 
+    private void deleteImage(String imageUrl) {
+        if (imageUrl == null || imageUrl.isEmpty()) {
+            return; // No old image, nothing to delete
+        }
+
+        try {
+            // Extract Public ID from Cloudinary URL
+            String publicId = imageUrl.substring(imageUrl.lastIndexOf("/") + 1, imageUrl.lastIndexOf("."));
+
+            cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());  // Delete from Cloudinary
+        } catch (Exception e) {
+            System.err.println("Failed to delete image: " + e.getMessage());
+        }
+    }
+
+
     @Override
     public void deleteCIF(Long id) {
-        if (!cifRepository.existsById(id)) {
+        Optional<CIF> cifOptional = cifRepository.findById(id);
+        if (cifOptional.isEmpty()) {
             throw new RuntimeException("CIF not found with ID: " + id);
         }
-        cifRepository.deleteById(id);
+
+        CIF cif = cifOptional.get();
+        cif.setStatus(2);
+        cifRepository.save(cif);
     }
 
 }
