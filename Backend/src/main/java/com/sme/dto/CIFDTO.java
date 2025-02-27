@@ -26,6 +26,7 @@ public class CIFDTO {
     private String maritalStatus;
     private String occupation;
     private String incomeSource;
+    private String serialNumber;
     @StatusConverter
     private Integer status;
     private LocalDateTime createdAt;

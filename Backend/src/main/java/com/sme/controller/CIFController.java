@@ -55,8 +55,8 @@ public class CIFController {
             @RequestParam("occupation") String occupation,
             @RequestParam("incomeSource") String incomeSource,
             @RequestParam("branchId") Long branchId,
-            @RequestParam(value = "frontNrc", required = false) MultipartFile frontNrc,
-            @RequestParam(value = "backNrc", required = false) MultipartFile backNrc
+            @RequestParam(value = "fNrcPhotoUrl", required = false) MultipartFile frontNrc,
+            @RequestParam(value = "bNrcPhotoUrl", required = false) MultipartFile backNrc
     ) throws IOException {
         CIFDTO cifDTO = CIFDTO.builder()
                 .name(name)
@@ -89,8 +89,8 @@ public class CIFController {
             @RequestParam("occupation") String occupation,
             @RequestParam("incomeSource") String incomeSource,
             @RequestParam("branchId") Long branchId,
-            @RequestParam(value = "frontNrc", required = false) MultipartFile frontNrc,
-            @RequestParam(value = "backNrc", required = false) MultipartFile backNrc
+            @RequestParam(value = "fNrcPhotoUrl", required = false) MultipartFile frontNrc,
+            @RequestParam(value = "bNrcPhotoUrl", required = false) MultipartFile backNrc
     ) throws IOException {
 
         CIFDTO cifDTO = CIFDTO.builder()

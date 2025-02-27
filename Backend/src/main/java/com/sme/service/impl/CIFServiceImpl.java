@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,6 +50,8 @@ public class CIFServiceImpl implements CIFService {
             boolean hasCurrentAccount = currentAccountService.hasCurrentAccount(cif.getId());
             CIFDTO cifDTO = modelMapper.map(cif, CIFDTO.class);
             cifDTO.setHasCurrentAccount(hasCurrentAccount);
+            cifDTO.setFNrcPhotoUrl(cif.getFNrcPhotoUrl());
+            cifDTO.setBNrcPhotoUrl(cif.getBNrcPhotoUrl());
             return cifDTO;
         });
     }
@@ -59,27 +62,38 @@ public class CIFServiceImpl implements CIFService {
         CIF cif = modelMapper.map(cifDTO, CIF.class);
         cif.setCreatedAt(LocalDateTime.now());
 
-        // ✅ Upload NRC Images to Cloudinary
         if (frontNrc != null && !frontNrc.isEmpty()) {
             String frontNrcUrl = uploadImage(frontNrc);
-            cif.setF_nrcPhoto(frontNrcUrl);
+            cif.setFNrcPhotoUrl(frontNrcUrl);
         }
 
         if (backNrc != null && !backNrc.isEmpty()) {
             String backNrcUrl = uploadImage(backNrc);
-            cif.setB_nrcPhoto(backNrcUrl);
+            cif.setBNrcPhotoUrl(backNrcUrl);
         }
 
-        // ✅ Find Branch
         Branch branch = branchRepository.findById(cifDTO.getBranchId())
                 .orElseThrow(() -> new RuntimeException("Branch not found with ID: " + cifDTO.getBranchId()));
         cif.setBranch(branch);
         cif.setStatus(1);
 
-        // ✅ Save to Database
+        String serialNumber = generateSerialNumber(branch);
+        cif.setSerialNumber(serialNumber);
+
         CIF savedCIF = cifRepository.save(cif);
         return modelMapper.map(savedCIF, CIFDTO.class);
     }
+
+    // New method to generate the serial number
+    private String generateSerialNumber(Branch branch) {
+        String branchCode =  branch.getBranchCode();
+
+        String uuidPart = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 6);
+
+        // Combine into final serial number
+        return "CIF-" + branchCode + "-" + uuidPart;
+    }
+
 
 
     private String uploadImage(MultipartFile file) throws IOException {
@@ -94,23 +108,29 @@ public class CIFServiceImpl implements CIFService {
         CIF cif = cifRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("CIF not found with ID: " + id));
 
-
         Long existingId = cif.getId();
+
+        // Configure ModelMapper to skip serialNumber
+        modelMapper.typeMap(CIFDTO.class, CIF.class).addMappings(mapper -> {
+            mapper.skip(CIF::setSerialNumber); // Skip mapping serialNumber
+        });
         modelMapper.map(cifDTO, cif);
+
         cif.setId(existingId);
-        cif.setCreatedAt(LocalDateTime.now());
+        cif.setCreatedAt(LocalDateTime.now()); // Consider removing this
         cif.setStatus(1);
-        // 🔥 Handle NRC Photo Update
+
+        // Handle NRC Photo Update
         if (frontNrc != null && !frontNrc.isEmpty()) {
-            deleteImage(cif.getF_nrcPhoto());
+            deleteImage(cif.getFNrcPhotoUrl());
             String frontNrcUrl = uploadImage(frontNrc);
-            cif.setF_nrcPhoto(frontNrcUrl);
+            cif.setFNrcPhotoUrl(frontNrcUrl);
         }
 
         if (backNrc != null && !backNrc.isEmpty()) {
-            deleteImage(cif.getB_nrcPhoto());
+            deleteImage(cif.getBNrcPhotoUrl());
             String backNrcUrl = uploadImage(backNrc);
-            cif.setB_nrcPhoto(backNrcUrl);
+            cif.setBNrcPhotoUrl(backNrcUrl);
         }
 
         CIF updatedCIF = cifRepository.save(cif);

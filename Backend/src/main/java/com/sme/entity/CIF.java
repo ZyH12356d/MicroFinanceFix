@@ -48,6 +48,9 @@ public class CIF {
     @Column(name = "income_source", nullable = false, length = 45)
     private String incomeSource;
 
+    @Column(unique = true, nullable = false)
+    private String serialNumber;
+
     @StatusConverter
     @Column(nullable = false, length = 45)
     private Integer status;
@@ -56,10 +59,10 @@ public class CIF {
     private LocalDateTime createdAt;
 
     @Column(name = "f_nrc_photo", nullable = false, length = 255)
-    private String F_nrcPhoto;
+    private String fNrcPhotoUrl;
 
     @Column(name = "b_nrc_photo", nullable = false, length = 255)
-    private String B_nrcPhoto;
+    private String bNrcPhotoUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id", nullable = false)
