@@ -17,10 +17,13 @@ public class CIF {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name",nullable = false, length = 60)
+    @Column(unique = true, nullable = false)
+    private String serialNumber;
+
+    @Column(name = "name", nullable = false, length = 60)
     private String name;
 
-    @Column(name = "nrc_number",nullable = false, length = 45)
+    @Column(name = "nrc_number", nullable = false, length = 45)
     private String nrcNumber;
 
     @Column(name = "dob", nullable = false)
@@ -46,7 +49,6 @@ public class CIF {
 
     @Column(name = "income_source", nullable = false, length = 45)
     private String incomeSource;
-
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
