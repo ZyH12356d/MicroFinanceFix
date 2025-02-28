@@ -3,6 +3,10 @@ package com.sme.controller;
 import com.sme.dto.CollateralDTO;
 import com.sme.service.CollateralService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,5 +58,17 @@ public class CollateralController {
     public ResponseEntity<Void> deleteCollateral(@PathVariable Long id) {
         return collateralService.deleteCollateral(id) ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<CollateralDTO>> getAllCollateralsPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "desc") String direction) {
+
+        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return ResponseEntity.ok(collateralService.getAllCollateralsPaginated(pageable));
     }
 }

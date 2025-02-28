@@ -8,6 +8,10 @@ import com.sme.repository.CIFRepository;
 import com.sme.service.CurrentAccountService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -91,5 +95,10 @@ public class CurrentAccountServiceImpl implements CurrentAccountService {
     public void deleteCurrentAccount(Long id) {
         currentAccountRepository.deleteById(id);
     }
-
+    @Override
+    public Page<CurrentAccountDTO> getAllCurrentAccountsPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        Page<CurrentAccount> accountPage = currentAccountRepository.findAll(pageable);
+        return accountPage.map(this::convertToDTO);
+    }
 }

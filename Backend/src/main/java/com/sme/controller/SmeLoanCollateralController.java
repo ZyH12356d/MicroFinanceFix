@@ -3,6 +3,7 @@ package com.sme.controller;
 import com.sme.dto.SmeLoanCollateralDTO;
 import com.sme.service.SmeLoanCollateralService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +13,10 @@ import java.util.List;
 @RequestMapping("/api/loan-collaterals")
 @RequiredArgsConstructor
 public class SmeLoanCollateralController {
+    @Autowired
+    private SmeLoanCollateralService loanCollateralService;
 
-    private final SmeLoanCollateralService loanCollateralService;
+    //private final SmeLoanCollateralService loanCollateralService;
 
     @PostMapping
     public ResponseEntity<SmeLoanCollateralDTO> linkCollateralToLoan(@RequestBody SmeLoanCollateralDTO dto) {

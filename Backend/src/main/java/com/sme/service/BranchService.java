@@ -15,27 +15,35 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 
 public interface BranchService {
 
     String generateBranchCode(String region, String township);
 
-    String getTownshipCode(String township);
-
     String getRegionCode(String region);
 
-   BranchDTO createBranch(BranchDTO branchDTO, AddressDTO addressDTO);
+    String getTownshipCode(String township);
 
-   BranchDTO convertToDTO(Branch branch);
+    Page<BranchDTO> getBranches(Pageable pageable);
+
+    BranchDTO createBranch(BranchDTO branchDTO, AddressDTO addressDTO);
+
+
+    BranchDTO convertToDTO(Branch branch);
+
+
 
    List<BranchDTO> getAllBranches();
 
    Optional<BranchDTO> getBranchById(Long id);
 
-   BranchDTO updateBranch(Long id, BranchDTO branchDTO);
-
-   void deleteBranch(Long id);
 
 
+    BranchDTO updateBranch(Long id, BranchDTO branchDTO);
+
+    void deleteBranch(Long id);
 }

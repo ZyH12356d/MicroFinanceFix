@@ -3,6 +3,7 @@ package com.sme.controller;
 import com.sme.dto.CurrentAccountDTO;
 import com.sme.service.CurrentAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,5 +51,12 @@ public class CurrentAccountController {
     public ResponseEntity<Void> deleteCurrentAccount(@PathVariable Long id) {
         currentAccountService.deleteCurrentAccount(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<CurrentAccountDTO>> getAllCurrentAccountsPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(currentAccountService.getAllCurrentAccountsPaginated(page, size));
     }
 }

@@ -1,6 +1,8 @@
 package com.sme.repository;
 
 import com.sme.entity.Branch;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,6 +22,8 @@ public interface BranchRepository extends JpaRepository<Branch, Long> {
             "ORDER BY b.id DESC")
     String findLastBranchCodeByRegionAndTownship(@Param("region") String region,
                                                  @Param("township") String township);
+
+    Page<Branch> findAll(Pageable pageable);
 
 
 
