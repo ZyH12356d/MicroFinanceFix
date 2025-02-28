@@ -26,13 +26,13 @@ import java.util.stream.Collectors;
 public class BranchServiceImpl implements BranchService {
 
     @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
     private BranchRepository branchRepository;
 
     @Autowired
     private AddressRepository addressRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Override
     @Transactional

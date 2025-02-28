@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 public class CollateralDTO {
     private Long id;
-    private String collateralType;
+    private String collateralTypeId;
     private BigDecimal value;
     private String description;
     @StatusConverter
