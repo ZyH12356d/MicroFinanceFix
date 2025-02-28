@@ -9,48 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class AddressService {
 
-    @Autowired
-    private AddressRepository addressRepository;
+public interface AddressService {
 
-    // Get all addresses
-    public List<Address> getAllAddresses() {
-        return addressRepository.findAll();
-    }
+    List<Address> getAllAddresses();
 
-    // Get an address by ID
-    public Optional<Address> getAddressById(long id) {
-        return addressRepository.findById(id);
-    }
+    Optional<Address> getAddressById(Long id);
 
-    // Create a new address
-    @Transactional
-    public Address createAddress(Address address) {
-        return addressRepository.save(address);
-    }
+    Address createAddress(Address address);
 
-    // Update an existing address
-    @Transactional
-    public Address updateAddress(long id, Address addressDetails) {
-        Optional<Address> optionalAddress = addressRepository.findById(id);
+    Address updateAddress(Long id, Address addressDetails);
 
-        if (optionalAddress.isPresent()) {
-            Address address = optionalAddress.get();
-            address.setRegion(addressDetails.getRegion());
-             address.setDistrict(addressDetails.getDistrict());
-             address.setTownship(addressDetails.getTownship());
-            address.setStreet(addressDetails.getStreet());
-            return addressRepository.save(address);
-        } else {
-            throw new RuntimeException("Address not found with id: " + id);
-        }
-    }
-
-    // Delete an address by ID
-    @Transactional
-    public void deleteAddress(long id) {
-        addressRepository.deleteById(id);
-    }
+    void deleteAddress(Long id);
 }

@@ -1,5 +1,6 @@
 package com.sme.entity;
 
+import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,10 +18,13 @@ public class CIF {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name",nullable = false, length = 60)
+    @Column(unique = true, nullable = false)
+    private String serialNumber;
+
+    @Column(name = "name", nullable = false, length = 60)
     private String name;
 
-    @Column(name = "nrc_number",nullable = false, length = 45)
+    @Column(name = "nrc_number", nullable = false, length = 45)
     private String nrcNumber;
 
     @Column(name = "dob", nullable = false)
@@ -47,15 +51,21 @@ public class CIF {
     @Column(name = "income_source", nullable = false, length = 45)
     private String incomeSource;
 
+    @Column(unique = true, nullable = false)
+    private String serialNumber;
+
+    @StatusConverter
+    @Column(nullable = false, length = 45)
+    private Integer status;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "f_nrc_photo", nullable = false, length = 255)
-    private String F_nrcPhoto;
+    private String fNrcPhotoUrl;
 
     @Column(name = "b_nrc_photo", nullable = false, length = 255)
-    private String B_nrcPhoto;
+    private String bNrcPhotoUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id", nullable = false)

@@ -144,4 +144,6 @@ public class BranchServiceImpl implements BranchService {
     public BranchDTO convertToDTO(Branch branch) {
         return modelMapper.map(branch, BranchDTO.class);
     }
+
+
 }
