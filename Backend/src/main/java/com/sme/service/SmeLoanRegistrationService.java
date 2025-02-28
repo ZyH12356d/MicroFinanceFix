@@ -20,15 +20,13 @@ import java.util.stream.Collectors;
 
 public interface SmeLoanRegistrationService {
 
-
-
     List<SmeLoanRegistrationDTO> getAllLoans();
 
     SmeLoanRegistrationDTO getLoanById(Long id);
 
     SmeLoanRegistrationDTO createLoan(SmeLoanRegistrationDTO dto);
 
-    SmeLoanRegistration registerLoan(SmeLoanRegistration loan);
+    SmeLoanRegistration registerLoan(SmeLoanRegistration loan, List<SmeLoanCollateral> loanCollaterals);
 
 
 }

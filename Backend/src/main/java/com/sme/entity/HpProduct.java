@@ -28,19 +28,19 @@ public class HpProduct {
     @ManyToOne
     @JoinColumn(name = "product_type_id", nullable = false)
     private ProductType productType;
+
  
     @ManyToOne
     @JoinColumn(name = "dealer_registration_id", nullable = false)
     private DealerRegistration dealerRegistration; // ✅ Corrected mapping
 
- 
     @Column(name = "hp_registration_id", nullable = false)
     private int hpRegistrationId;
 
  
     @Column(name = "commission_fee", precision = 10, scale = 2, nullable = false)
- 
     private BigDecimal commissionFee;
+ 
 
  
 }

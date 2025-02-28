@@ -15,7 +15,5 @@ public interface HolidayRepository extends JpaRepository<Holiday, Long> {
      List<Holiday> findByBranchId(Long branchId);
 
      boolean existsByBranchAndHolidayDate(Branch branch, Date holidayDate);
- 
 
- 
 }

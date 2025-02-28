@@ -65,7 +65,7 @@ public class GoogleCalendarService {
 
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
-                .setDataStoreFactory(new FileDataStoreFactory(Paths.get(TOKENS_DIRECTORY_PATH).toFile()))
+                .setDataStoreFactory(new FileDataStoreFactory(Paths. get(TOKENS_DIRECTORY_PATH).toFile()))
                 .setAccessType("offline")
                 .build();
 

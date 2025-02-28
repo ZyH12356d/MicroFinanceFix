@@ -36,7 +36,7 @@ public class BranchController {
         Optional<BranchDTO> branch = branchService.getBranchById(id);
         return branch.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
+    
     // Create a new branch
     @PostMapping
     public ResponseEntity<BranchDTO> createBranch(@RequestBody Map<String, Object> request) {

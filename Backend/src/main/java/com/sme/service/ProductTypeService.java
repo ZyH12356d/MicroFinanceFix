@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 public interface ProductTypeService {
 
+
     ProductTypeDTO createProductType(ProductTypeDTO productTypeDTO);
 
     List<ProductTypeDTO> getAllActiveProductTypes();

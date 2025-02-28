@@ -47,7 +47,6 @@ public class HpRegistration {
     @Column(name = "current_account_id", nullable = false)
     private Long currentAccountId;
 
-
     @Column(name = "hp_product_id", nullable = false)
     private Long hpProductId;
 }
