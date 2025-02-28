@@ -1,5 +1,6 @@
 package com.sme.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sme.annotation.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -51,8 +52,6 @@ public class CIF {
     @Column(name = "income_source", nullable = false, length = 45)
     private String incomeSource;
 
-    @Column(unique = true, nullable = false)
-    private String serialNumber;
 
     @StatusConverter
     @Column(nullable = false, length = 45)

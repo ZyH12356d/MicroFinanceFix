@@ -39,7 +39,7 @@ public class CIFServiceImpl implements CIFService {
 
     @Override
     public List<CIFDTO> getAllCIFs() {
-        return cifRepository.findAll().stream()
+        return cifRepository.findByStatus(1).stream()
                 .map(cif -> modelMapper.map(cif, CIFDTO.class))
                 .collect(Collectors.toList());
     }
@@ -109,28 +109,36 @@ public class CIFServiceImpl implements CIFService {
                 .orElseThrow(() -> new RuntimeException("CIF not found with ID: " + id));
 
         Long existingId = cif.getId();
+        String existingFNrcPhotoUrl = cif.getFNrcPhotoUrl();
+        String existingBNrcPhotoUrl = cif.getBNrcPhotoUrl();
 
-        // Configure ModelMapper to skip serialNumber
         modelMapper.typeMap(CIFDTO.class, CIF.class).addMappings(mapper -> {
-            mapper.skip(CIF::setSerialNumber); // Skip mapping serialNumber
+            mapper.skip(CIF::setSerialNumber);
         });
         modelMapper.map(cifDTO, cif);
 
         cif.setId(existingId);
-        cif.setCreatedAt(LocalDateTime.now()); // Consider removing this
+        cif.setCreatedAt(LocalDateTime.now());
         cif.setStatus(1);
 
-        // Handle NRC Photo Update
         if (frontNrc != null && !frontNrc.isEmpty()) {
             deleteImage(cif.getFNrcPhotoUrl());
             String frontNrcUrl = uploadImage(frontNrc);
             cif.setFNrcPhotoUrl(frontNrcUrl);
+        } else if (cifDTO.getFNrcPhotoUrl() != null) {
+            cif.setFNrcPhotoUrl(cifDTO.getFNrcPhotoUrl());
+        } else {
+            cif.setFNrcPhotoUrl(existingFNrcPhotoUrl);
         }
 
         if (backNrc != null && !backNrc.isEmpty()) {
             deleteImage(cif.getBNrcPhotoUrl());
             String backNrcUrl = uploadImage(backNrc);
             cif.setBNrcPhotoUrl(backNrcUrl);
+        } else if (cifDTO.getBNrcPhotoUrl() != null) {
+            cif.setBNrcPhotoUrl(cifDTO.getBNrcPhotoUrl());
+        } else {
+            cif.setBNrcPhotoUrl(existingBNrcPhotoUrl);
         }
 
         CIF updatedCIF = cifRepository.save(cif);

@@ -1,5 +1,6 @@
 package com.sme.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sme.annotation.StatusConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,11 +35,12 @@ public class CIFDTO {
 
     private boolean hasCurrentAccount;
 
-
     private MultipartFile frontNrc;
     private MultipartFile backNrc;
 
 
+    @JsonProperty("fNrcPhotoUrl")
     private String fNrcPhotoUrl;
+    @JsonProperty("bNrcPhotoUrl")
     private String bNrcPhotoUrl;
 }
