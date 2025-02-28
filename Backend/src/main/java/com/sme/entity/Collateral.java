@@ -22,10 +22,15 @@ public class Collateral {
     @Column(name = "description", nullable = false, length = 1000)
     private String description;
 
+    @Column(name = "f_collateral_photo", nullable = false, length = 255)
+    private String f_collateralPhoto;
+
+    @Column(name = "b_collateral_photo", nullable = false, length = 255)
+    private String b_collateralPhoto;
+
     @StatusConverter
     @Column(nullable = false, length = 45)
     private Integer status;
-
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
@@ -37,11 +42,9 @@ public class Collateral {
     @ManyToOne
     @JoinColumn(name = "cif_id", nullable = false)
     private CIF cif;
-
     @ManyToOne
-    @JoinColumn(name = "collateral_type_id", nullable = false)
+    @JoinColumn(name = "collateral_type_id", nullable = false)  // Changed from collateral_type to collateral_type_id
     private CollateralType collateralType;
-
     @OneToMany(mappedBy = "collateral", cascade = CascadeType.ALL)
     private List<SmeLoanCollateral> smeLoanCollaterals;
 }

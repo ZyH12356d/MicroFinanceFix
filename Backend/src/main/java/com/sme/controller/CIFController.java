@@ -3,6 +3,8 @@ package com.sme.controller;
 import com.sme.dto.CIFDTO;
 import com.sme.service.CIFService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,20 +21,26 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CIFController {
 
-    private final CIFService cifService;
+    @Autowired
+    private CIFService cifService;
 
-    // ✅ Get All CIFs
     @GetMapping
     public ResponseEntity<List<CIFDTO>> getAllCIFs() {
         List<CIFDTO> cifList = cifService.getAllCIFs();
         return ResponseEntity.ok(cifList);
     }
 
-    // ✅ Get CIF by ID
-    @GetMapping("/{id}")
-    public Optional<CIFDTO> getCIFById(@PathVariable Long id) {
-        return cifService.getCIFById(id);
+    @GetMapping("/cif/{id}")
+    public ResponseEntity<?> getCIFById(@PathVariable Long id) {
+        Optional<CIFDTO> cifDTO = cifService.getCIFById(id);
+
+        if (cifDTO.isPresent()) {
+            return ResponseEntity.ok(cifDTO.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("CIF not found");
+        }
     }
+
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CIFDTO> createCIF(
@@ -47,8 +55,8 @@ public class CIFController {
             @RequestParam("occupation") String occupation,
             @RequestParam("incomeSource") String incomeSource,
             @RequestParam("branchId") Long branchId,
-            @RequestParam(value = "frontNrc", required = false) MultipartFile frontNrc,
-            @RequestParam(value = "backNrc", required = false) MultipartFile backNrc
+            @RequestParam(value = "fNrcPhotoUrl", required = false) MultipartFile frontNrc,
+            @RequestParam(value = "bNrcPhotoUrl", required = false) MultipartFile backNrc
     ) throws IOException {
         CIFDTO cifDTO = CIFDTO.builder()
                 .name(name)
@@ -67,7 +75,6 @@ public class CIFController {
         return ResponseEntity.ok(cifService.createCIF(cifDTO, frontNrc, backNrc));
     }
 
-
     @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
     public ResponseEntity<CIFDTO> updateCIF(
             @PathVariable Long id,
@@ -82,8 +89,8 @@ public class CIFController {
             @RequestParam("occupation") String occupation,
             @RequestParam("incomeSource") String incomeSource,
             @RequestParam("branchId") Long branchId,
-            @RequestParam(value = "frontNrc", required = false) MultipartFile frontNrc,
-            @RequestParam(value = "backNrc", required = false) MultipartFile backNrc
+            @RequestParam(value = "fNrcPhotoUrl", required = false) MultipartFile frontNrc,
+            @RequestParam(value = "bNrcPhotoUrl", required = false) MultipartFile backNrc
     ) throws IOException {
 
         CIFDTO cifDTO = CIFDTO.builder()
@@ -100,9 +107,9 @@ public class CIFController {
                 .branchId(branchId)
                 .build();
 
-        // 🔥 Pass all required arguments
-        return ResponseEntity.ok(cifService.updateCIF(id, cifDTO));
+        return ResponseEntity.ok(cifService.updateCIF(id, cifDTO, frontNrc, backNrc));
     }
+
 
 
     // ✅ Delete CIF
