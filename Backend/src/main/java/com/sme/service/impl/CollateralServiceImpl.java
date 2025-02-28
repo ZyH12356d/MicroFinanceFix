@@ -3,6 +3,8 @@ package com.sme.service.impl;
 // Add this import
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 import com.cloudinary.utils.ObjectUtils;
@@ -38,6 +40,8 @@ public class CollateralServiceImpl implements CollateralService {
     private final CollateralTypeRepository collateralTypeRepository; // Add this
     private final ModelMapper modelMapper;
     private final Cloudinary cloudinary;
+
+
 
     @Override
     public List<CollateralDTO> getAllCollaterals() {
@@ -156,4 +160,12 @@ public class CollateralServiceImpl implements CollateralService {
         }
         return false;
     }
+
+    @Override
+    public Page<CollateralDTO> getAllCollateralsPaginated(
+            Pageable pageable) {
+        return collateralRepository.findAll(pageable)
+                .map(collateral -> modelMapper.map(collateral, CollateralDTO.class));
+    }
+
 }
