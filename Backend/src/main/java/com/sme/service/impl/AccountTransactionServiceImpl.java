@@ -24,13 +24,22 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
 
     @Override
     public AccountTransaction createTransaction(AccountTransaction transaction) {
-        if (transaction == null || transaction.getCurrentAccount() == null) {
-            throw new IllegalArgumentException("Transaction or associated account cannot be null.");
+        if (transaction == null || transaction.getCurrentAccount() == null || transaction.getCurrentAccount().getId() == null) {
+            throw new IllegalArgumentException("Transaction or associated account ID cannot be null.");
         }
 
         Long accountId = transaction.getCurrentAccount().getId();
-        CurrentAccount account = currentAccountRepository.findById(accountId)
-                .orElseThrow(() -> new IllegalArgumentException("Current Account not found."));
+        Optional<CurrentAccount> accountOpt = currentAccountRepository.findById(accountId);
+
+        if (accountOpt.isEmpty()) {
+            throw new IllegalArgumentException("Current Account not found with ID: " + accountId);
+        }
+
+        CurrentAccount account = accountOpt.get();
+
+        if (account.getStatus() != 1) {
+            throw new IllegalArgumentException("Transaction cannot be processed. Account is not ACTIVE.");
+        }
 
         BigDecimal amount = transaction.getAmount();
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
@@ -42,33 +51,23 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
             throw new IllegalArgumentException("Transaction type must be specified (CREDIT/DEBIT).");
         }
 
-        // ✅ Ensure the account is ACTIVE before allowing transactions
-        if (!(1 == account.getStatus())) {
-            throw new IllegalArgumentException("Transaction cannot be processed. Account is not ACTIVE.");
-        }
-
         BigDecimal newBalance;
-
         if (type == TransactionType.CREDIT) {
-            // ✅ Handle deposits (CREDIT)
             newBalance = account.getBalance().add(amount);
         } else {
-            // ✅ Handle withdrawals (DEBIT)
             newBalance = account.getBalance().subtract(amount);
-
             if (newBalance.compareTo(account.getMinimumBalance()) < 0) {
                 throw new IllegalArgumentException("Insufficient balance. Minimum balance must be maintained.");
             }
         }
 
-        // ✅ Update balance and save account
         account.setBalance(newBalance);
         currentAccountRepository.save(account);
 
-        // ✅ Set transaction status as ACTIVE and save transaction
         transaction.setStatus(Status.ACTIVE.getCode());
         return accountTransactionRepository.save(transaction);
     }
+
 
 
 

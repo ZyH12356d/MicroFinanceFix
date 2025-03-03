@@ -14,13 +14,15 @@ public class AccountTransaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "transaction_type", nullable = false, length = 45)
-    private String transactionType;
+    @Enumerated(EnumType.STRING)
+    private TransactionType transactionType; // CREDIT or DEBIT
+
 
     @Column(nullable = false, length = 45)
-    private String amount;
+    private BigDecimal amount;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "transaction_date", nullable = false)
@@ -41,8 +43,5 @@ public class AccountTransaction {
     @JoinColumn(name = "current_account_id", nullable = false)
     private CurrentAccount currentAccount;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
 
 }

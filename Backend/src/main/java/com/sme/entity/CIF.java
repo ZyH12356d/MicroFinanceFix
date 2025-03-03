@@ -51,9 +51,6 @@ public class CIF {
     @Column(name = "income_source", nullable = false, length = 45)
     private String incomeSource;
 
-    @Column(unique = true, nullable = false)
-    private String serialNumber;
-
     @StatusConverter
     @Column(nullable = false, length = 45)
     private Integer status;

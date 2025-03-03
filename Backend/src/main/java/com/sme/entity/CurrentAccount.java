@@ -23,7 +23,7 @@ public class CurrentAccount {
     @Column(nullable = false, length = 45)
     private BigDecimal balance;
 
-    @Column(name = "maximium_balance", nullable = false, precision = 18, scale = 2)
+    @Column(name = "maximum_balance", nullable = false, precision = 18, scale = 2)
     private BigDecimal maximumBalance;
 
     @Column(name = "minimum_balance", nullable = false, precision = 18, scale = 2)
